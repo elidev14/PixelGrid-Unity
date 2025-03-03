@@ -13,36 +13,46 @@ public class CameraController : MonoBehaviour
     private bool _isDragging;
 
     [SerializeField]
-    private float ZoomStep, minCamSize, maxCamSize;
+    private float ZoomStep;
+
+    private float minCamSize, maxCamSize;
 
     private float mapMinX, mapMaxX, mapMinY, mapMaxY;
 
-    public void SetTilemapBounds(Tilemap tilemap)
+    private Vector2 minBounds;
+    private Vector2 maxBounds;
+
+    private Bounds _cameraBounds;
+    private Vector3 _targetPos;
+
+    public void InitializeCamera(BoundsInt bounds)
     {
-        if (tilemap == null)
-        {
-            Debug.LogError("CameraController: Received null Tilemap!");
-            return;
-        }
-
-        BoundsInt bounds = tilemap.cellBounds;
-        Debug.Log($"Tilemap Bounds: min={bounds.min}, max={bounds.max}");
-
-        Vector3Int minCell = bounds.min;
-        Vector3Int maxCell = bounds.max;
-
-        Vector3 minWorld = tilemap.GetCellCenterWorld(minCell) - new Vector3(0.5f, 0.5f, 0);
-        Vector3 maxWorld = tilemap.GetCellCenterWorld(maxCell) + new Vector3(0.5f, 0.5f, 0);
 
 
-        Debug.Log($"Cell Center World: minWorld={minWorld}, maxWorld={maxWorld}");
+        // Debug.Log($"Cell Center World: minWorld={minWorld}, maxWorld={maxWorld}");
 
-        mapMinX = minWorld.x;
-        mapMaxX = maxWorld.x;
-        mapMinY = minWorld.y;
-        mapMaxY = maxWorld.y;
+
+        minBounds = new Vector2(bounds.min.x, bounds.min.y);
+        maxBounds = new Vector2(bounds.max.x, bounds.max.y);
+
+        mapMinX = minBounds.x;
+        mapMaxX = maxBounds.x;
+        mapMinY = minBounds.y;
+        mapMaxY = maxBounds.y;
+
+        float worldWidth = mapMaxX - mapMinX;
+        float worldHeight = mapMaxY - mapMinY;
+
+        // Calculate maxCamSize to fit the entire map within the camera view
+        float maxZoomX = worldWidth / (2f * Camera.aspect);
+        float maxZoomY = worldHeight / 2f;
+
+        maxCamSize = Mathf.Max(maxZoomX, maxZoomY); // Ensure it fits both X & Y
+
+        minCamSize = Mathf.Max(2f, maxCamSize * 0.1f); // Prevent excessive zoom-in
 
         Debug.Log($"Camera Bounds: minX={mapMinX}, maxX={mapMaxX}, minY={mapMinY}, maxY={mapMaxY}");
+        Debug.Log($"Zoom Limits: minCamSize={minCamSize}, maxCamSize={maxCamSize}");
 
         CenterCameraOnMap();
     }
@@ -50,8 +60,15 @@ public class CameraController : MonoBehaviour
 
     private void CenterCameraOnMap()
     {
-        float centerX = (mapMinX + mapMaxX) / 2;
-        float centerY = (mapMinY + mapMaxY) / 2;
+
+        if (minBounds == Vector2.zero && maxBounds == Vector2.zero)
+        {
+            Debug.LogWarning("CameraController: WorldBounds are not set yet.");
+            return;
+        }
+
+        float centerX = (minBounds.x + maxBounds.x) / 2;
+        float centerY = (minBounds.y + maxBounds.y) / 2;
 
         Camera.transform.position = new Vector3(centerX, centerY, Camera.transform.position.z);
     }
@@ -61,6 +78,7 @@ public class CameraController : MonoBehaviour
         if (_isDragging)
         {
             _difference = _origin - GetMousePosition;
+
             Camera.transform.position = ClampCamera(Camera.transform.position + _difference);
         }
     }
@@ -104,13 +122,17 @@ public class CameraController : MonoBehaviour
 
     private Vector3 ClampCamera(Vector3 targetPosition)
     {
-        float camHeight = Camera.orthographicSize * 2;
+        float camHeight = Camera.orthographicSize;
         float camWidth = camHeight * Camera.aspect;
 
-        float minX = mapMinX + camWidth / 2;
-        float maxX = mapMaxX - camWidth / 2;
-        float minY = mapMinY + camHeight / 2;
-        float maxY = mapMaxY - camHeight / 2;
+        float minX = mapMinX + camWidth;
+        float maxX = mapMaxX - camWidth;
+        float minY = mapMinY + camHeight;
+        float maxY = mapMaxY - camHeight;
+
+        //_cameraBounds = new Bounds();
+
+        //_cameraBounds.SetMinMax(new Vector3(minX, minY, 0.0f), new Vector3(maxX, maxY, 0.0f));
 
         float x = Mathf.Clamp(targetPosition.x, minX, maxX);
         float y = Mathf.Clamp(targetPosition.y, minY, maxY);
