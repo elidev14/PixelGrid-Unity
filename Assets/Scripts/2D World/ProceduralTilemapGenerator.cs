@@ -7,8 +7,7 @@ public class ProceduralTilemapGenerator : MonoBehaviour
 {
 
     // Source: https://youtu.be/qNZ-0-7WuS8?si=69THi61AXzEkToRW, 
-
-
+    public UnityEvent<Tilemap> OnMapGenerated = new UnityEvent<Tilemap>();
 
     [SerializeField]
     private GameManager gameManager;
@@ -54,6 +53,7 @@ public class ProceduralTilemapGenerator : MonoBehaviour
         y_offset = seed * 3;
 
         Debug.Log($"Using Seed: {seed}");
+
         CreateTileLayers();
         GenerateTerrain();
 
@@ -100,28 +100,9 @@ public class ProceduralTilemapGenerator : MonoBehaviour
         }
 
 
-        // AdjustTilemapScale();
 
-        gameManager.NotifyMapGenerated(tilemap);
-    }
 
-    private void AdjustTilemapScale()
-    {
-        // Get the Tilemap's current bounds
-        BoundsInt bounds = tilemap.cellBounds;
-
-        // Get the size of the tiles in world space
-        Vector3 tileSize = tilemap.tileAnchor;
-
-        // Calculate the scale factors based on the number of tiles and tile size
-        float widthInWorldUnits = bounds.size.x * tileSize.x;  // Width in world units
-        float heightInWorldUnits = bounds.size.y * tileSize.y; // Height in world units
-
-        // Adjust the Tilemap's transform scale
-        tilemap.transform.localScale = new Vector3(widthInWorldUnits / bounds.size.x, heightInWorldUnits / bounds.size.y, 1f);
-
-        // Debug log the new scale
-        Debug.Log($"Tilemap scale adjusted to: {tilemap.transform.localScale}");
+        OnMapGenerated?.Invoke(tilemap);
     }
 
     private int GetId(int x, int y)
