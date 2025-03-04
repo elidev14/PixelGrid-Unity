@@ -24,18 +24,20 @@ public class ProceduralTilemapGenerator : MonoBehaviour
     private float magnification = 10f; // Perlin noise scale
 
     [SerializeField]
+    public int edgeOffset = 3;
+
+    [SerializeField]
     private FixedSizeContainer<CustomTile> PriorityLevel;
 
     [SerializeField]
     private float seed = 0; // Default seed, 0 means random
 
-    private Dictionary<int, RuleTile> tileLayers; // Stores tile layers
+    private Dictionary<int, CustomTile> tileLayers; // Stores tile layers
 
     private float x_offset;
     private float y_offset;
 
 
-    private float storeSeed = 0; // Default seed, 0 means random
 
     void Start()
     {
@@ -59,7 +61,8 @@ public class ProceduralTilemapGenerator : MonoBehaviour
 
     }
 
-    // only for debugging purposes
+
+    private float storeSeed = 0; // Default seed, 0 means random
     void Update()
     {
         // Regenerate terrain if the seed changes
@@ -74,7 +77,7 @@ public class ProceduralTilemapGenerator : MonoBehaviour
 
     private void CreateTileLayers()
     {
-        tileLayers = new Dictionary<int, RuleTile>();
+        tileLayers = new Dictionary<int, CustomTile>();
 
         for (var i = 0; i < PriorityLevel.Length; i++)
         {
@@ -104,7 +107,7 @@ public class ProceduralTilemapGenerator : MonoBehaviour
 
         float perlinValue = GetPerlinNoise(x, y);
         int id = Mathf.FloorToInt(perlinValue);
-        int edgeOffset = 3;
+
 
         // Ensure edges do not get the bottom tile
         if (x < edgeOffset || x > width - edgeOffset || y < edgeOffset || y > height - edgeOffset)
