@@ -6,7 +6,8 @@ using UnityEngine.Tilemaps;
 public class ProceduralTilemapGenerator : MonoBehaviour
 {
 
-    // Source: https://youtu.be/qNZ-0-7WuS8?si=69THi61AXzEkToRW, 
+    // Source: https://youtu.be/qNZ-0-7WuS8?si=69THi61AXzEkToRW
+
     public UnityEvent<Tilemap> OnMapGenerated = new UnityEvent<Tilemap>();
 
     [SerializeField]
@@ -23,7 +24,7 @@ public class ProceduralTilemapGenerator : MonoBehaviour
     private float magnification = 10f; // Perlin noise scale
 
     [SerializeField]
-    private List<RuleTile> RuleTiles; // List of tiles representing layers
+    private FixedSizeContainer<CustomTile> PriorityLevel;
 
     [SerializeField]
     private float seed = 0; // Default seed, 0 means random
@@ -34,7 +35,6 @@ public class ProceduralTilemapGenerator : MonoBehaviour
     private float y_offset;
 
 
-
     private float storeSeed = 0; // Default seed, 0 means random
 
     void Start()
@@ -42,7 +42,7 @@ public class ProceduralTilemapGenerator : MonoBehaviour
         // Generate a random seed if not set
         if (seed == 0)
         {
-            seed = Random.Range(1000, 9999999999999999999); // Set a random seed if not provided
+            seed = Random.Range(1000, 9999999999999999999); //Set a random seed if not provided
         }
 
         // For debugging purposes
@@ -50,7 +50,7 @@ public class ProceduralTilemapGenerator : MonoBehaviour
 
         // Use the seed to generate consistent terrain
         x_offset = seed * 2;
-        y_offset = seed * 3;
+        y_offset = seed * 2;
 
         Debug.Log($"Using Seed: {seed}");
 
@@ -67,25 +67,23 @@ public class ProceduralTilemapGenerator : MonoBehaviour
         {
             storeSeed = seed;
             x_offset = seed * 2;
-            y_offset = seed * 3;
+            y_offset = seed * 2;
             GenerateTerrain();
         }
-
-
     }
 
     private void CreateTileLayers()
     {
         tileLayers = new Dictionary<int, RuleTile>();
 
-        for (var i = 0; i < RuleTiles.Count; i++)
+        for (var i = 0; i < PriorityLevel.Length; i++)
         {
-            tileLayers.Add(i, RuleTiles[i]);
+            var level = PriorityLevel[i];
+            if (level != null)
+            {
+                tileLayers.Add(i, level);
+            }
         }
-
-        Debug.Log($"Initialized {tileLayers.Count} tile layers.");
-        // Notify the GameManager that the map is ready
-
     }
 
     private void GenerateTerrain()
@@ -98,15 +96,12 @@ public class ProceduralTilemapGenerator : MonoBehaviour
                 SetTile(tileId, x, y);
             }
         }
-
-
-
-
         OnMapGenerated?.Invoke(tilemap);
     }
 
     private int GetId(int x, int y)
     {
+
         float perlinValue = GetPerlinNoise(x, y);
         int id = Mathf.FloorToInt(perlinValue);
         int edgeOffset = 3;
