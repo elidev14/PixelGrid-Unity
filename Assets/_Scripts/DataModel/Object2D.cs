@@ -1,15 +1,18 @@
 ﻿
 using System;
 
+
+
+[Serializable]
 public class Object2D
 {
-    public Guid ID { get; set; }
-    public Guid EnvironmentID { get; set; }
-    public string PrefabID { get; set; }
-    public float PosX { get; set; }
-    public float PosY { get; set; }
-    public float ScaleX { get; set; }
-    public float ScaleY { get; set; }
-    public float RotationZ { get; set; }
-    public int SortingLayer { get; set; }
+    public string ID;
+    public string EnvironmentID;
+    public string PrefabID;
+    public float PosX;
+    public float PosY;
+    public float ScaleX;
+    public float ScaleY;
+    public float RotationZ;
+    public int SortingLayer;
 }

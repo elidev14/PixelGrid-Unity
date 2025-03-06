@@ -22,15 +22,8 @@ public class CameraController : MonoBehaviour
     private Vector2 minBounds;
     private Vector2 maxBounds;
 
-    private Bounds _cameraBounds;
-    private Vector3 _targetPos;
-
     public void InitializeCamera(BoundsInt bounds)
     {
-
-
-        // Debug.Log($"Cell Center World: minWorld={minWorld}, maxWorld={maxWorld}");
-
 
         minBounds = new Vector2(bounds.min.x, bounds.min.y);
         maxBounds = new Vector2(bounds.max.x, bounds.max.y);
@@ -40,18 +33,16 @@ public class CameraController : MonoBehaviour
         mapMinY = minBounds.y;
         mapMaxY = maxBounds.y;
 
-        float worldWidth = mapMaxX - mapMinX;
-        float worldHeight = mapMaxY - mapMinY;
+        float worldWidth = mapMaxX;
+        float worldHeight = mapMaxY;
 
-        // Calculate maxCamSize to fit the entire map within the camera view
-        float maxZoomX = worldWidth / (2f * Camera.aspect);
-        float maxZoomY = worldHeight / 2f;
+        maxCamSize = worldWidth;
 
-        maxCamSize = Mathf.Max(maxZoomX, maxZoomY); // Ensure it fits both X & Y
+        minCamSize = Mathf.Max(2f, maxCamSize * 0.1f);
 
-        minCamSize = Mathf.Max(2f, maxCamSize * 0.1f); // Prevent excessive zoom-in
+        Debug.Log($"Camera orthographicSize: {Camera.orthographicSize}");
 
-        Debug.Log($"Camera Bounds: minX={mapMinX}, maxX={mapMaxX}, minY={mapMinY}, maxY={mapMaxY}");
+        Debug.Log($"World Bounds: minX={mapMinX}, maxX={mapMaxX}, minY={mapMinY}, maxY={mapMaxY}");
         Debug.Log($"Zoom Limits: minCamSize={minCamSize}, maxCamSize={maxCamSize}");
 
         CenterCameraOnMap();
@@ -92,7 +83,7 @@ public class CameraController : MonoBehaviour
         _isDragging = ctx.started || ctx.performed;
     }
 
-    public void Zoom(InputAction.CallbackContext ctx)
+    public void ScrollZoom(InputAction.CallbackContext ctx)
     {
         float scroll = ctx.ReadValue<float>();
 
@@ -130,9 +121,6 @@ public class CameraController : MonoBehaviour
         float minY = mapMinY + camHeight;
         float maxY = mapMaxY - camHeight;
 
-        //_cameraBounds = new Bounds();
-
-        //_cameraBounds.SetMinMax(new Vector3(minX, minY, 0.0f), new Vector3(maxX, maxY, 0.0f));
 
         float x = Mathf.Clamp(targetPosition.x, minX, maxX);
         float y = Mathf.Clamp(targetPosition.y, minY, maxY);

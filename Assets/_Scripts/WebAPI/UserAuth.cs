@@ -1,9 +1,12 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Auth : MonoBehaviour
+public class UserAuth : MonoBehaviour
 {
 
+
+    // For debugging purposes
     public User user;
 
     public UserApiClient userApiClient;
@@ -16,7 +19,9 @@ public class Auth : MonoBehaviour
         {
             case WebRequestData<string> dataResponse:
                 Debug.Log("Login succes!");
-                // TODO: Todo handle succes scenario.
+                // TODO: Switch to menu screen
+                //SceneManager.LoadScene("2D World Template");
+                SceneManager.LoadScene("Menu Screen");
                 break;
             case WebRequestError errorResponse:
                 string errorMessage = errorResponse.ErrorMessage;

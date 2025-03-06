@@ -1,5 +1,5 @@
 ﻿[System.Serializable]
-public class FixedSizeContainer<T>
+public class FixedSizedContainer<T>
 {
     public T level1;
     public T level2;

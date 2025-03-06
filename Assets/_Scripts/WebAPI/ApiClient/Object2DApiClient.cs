@@ -2,15 +2,14 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class Object2DApiClient : MonoBehaviour
+public class Object2DApiClient : Singleton<Object2DApiClient>
 {
-    public WebClient webClient;
 
     public async Awaitable<IWebRequestReponse> ReadObject2Ds(string environmentId)
     {
         string route = "/Environment2D/" + environmentId + "/Object2D";
 
-        IWebRequestReponse webRequestResponse = await webClient.SendGetRequest(route);
+        IWebRequestReponse webRequestResponse = await WebApiClient.Instance.SendGetRequest(route);
         return ParseObject2DListResponse(webRequestResponse);
     }
 
@@ -19,7 +18,7 @@ public class Object2DApiClient : MonoBehaviour
         string route = "/Environment2D/" + object2D.EnvironmentID + "/Object2D";
         string data = JsonUtility.ToJson(object2D);
 
-        IWebRequestReponse webRequestResponse = await webClient.SendPostRequest(route, data);
+        IWebRequestReponse webRequestResponse = await WebApiClient.Instance.SendPostRequest(route, data);
         return ParseObject2DResponse(webRequestResponse);
     }
 
@@ -28,13 +27,13 @@ public class Object2DApiClient : MonoBehaviour
         string route = "/Environment2D/" + object2D.EnvironmentID + "/Object2D";
         string data = JsonUtility.ToJson(object2D);
 
-        return await webClient.SendPutRequest(route, data);
+        return await WebApiClient.Instance.SendPutRequest(route, data);
     }
 
     public async Awaitable<IWebRequestReponse> DeleteObject(string environmentId, string objectID)
     {
         string route = "/Environment2D/" + environmentId + "/Object2D/" + objectID;
-        return await webClient.SendDeleteRequest(route);
+        return await WebApiClient.Instance.SendDeleteRequest(route);
     }
 
     private IWebRequestReponse ParseObject2DResponse(IWebRequestReponse webRequestResponse)

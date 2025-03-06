@@ -2,14 +2,12 @@ using UnityEngine;
 
 public class UserApiClient : MonoBehaviour
 {
-    public WebClient webClient;
-
     public async Awaitable<IWebRequestReponse> Register(User user)
     {
         string route = "/account/register";
         string data = JsonUtility.ToJson(user);
 
-        return await webClient.SendPostRequest(route, data);
+        return await WebApiClient.Instance.SendPostRequest(route, data);
     }
 
     public async Awaitable<IWebRequestReponse> Login(User user)
@@ -17,7 +15,7 @@ public class UserApiClient : MonoBehaviour
         string route = "/account/login";
         string data = JsonUtility.ToJson(user);
 
-        IWebRequestReponse response = await webClient.SendPostRequest(route, data);
+        IWebRequestReponse response = await WebApiClient.Instance.SendPostRequest(route, data);
         return ProcessLoginResponse(response);
     }
 
@@ -28,7 +26,7 @@ public class UserApiClient : MonoBehaviour
             case WebRequestData<string> data:
                 Debug.Log("Response data raw: " + data.Data);
                 string token = JsonHelper.ExtractToken(data.Data);
-                webClient.SetToken(token);
+                WebApiClient.Instance.SetToken(token);
                 return new WebRequestData<string>("Succes");
             default:
                 return webRequestResponse;

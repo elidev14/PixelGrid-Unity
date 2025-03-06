@@ -23,28 +23,29 @@ public class ProceduralTilemapGenerator : MonoBehaviour
     [SerializeField]
     private float magnification = 10f; // Perlin noise scale
 
-    [SerializeField]
-    public int edgeOffset = 3;
+
+    private int edgeOffset = 3;
 
     [SerializeField]
-    private FixedSizeContainer<CustomTile> PriorityLevel;
+    private FixedSizedContainer<CustomTile> PriorityLevel;
 
     [SerializeField]
-    private float seed = 0; // Default seed, 0 means random
+    private int seed = 0; // Default seed, 0 means random
 
     private Dictionary<int, CustomTile> tileLayers; // Stores tile layers
 
-    private float x_offset;
-    private float y_offset;
+    private int x_offset;
+    private int y_offset;
 
 
+    private float storeSeed = 0; // Default seed, 0 means random
 
-    void Start()
+    public void GenerateWorld()
     {
         // Generate a random seed if not set
         if (seed == 0)
         {
-            seed = Random.Range(1000, 9999999999999999999); //Set a random seed if not provided
+            seed = Random.Range(1000, 999999); //Set a random seed if not provided
         }
 
         // For debugging purposes
@@ -58,22 +59,20 @@ public class ProceduralTilemapGenerator : MonoBehaviour
 
         CreateTileLayers();
         GenerateTerrain();
-
     }
 
 
-    private float storeSeed = 0; // Default seed, 0 means random
-    void Update()
-    {
-        // Regenerate terrain if the seed changes
-        if (storeSeed != seed)
-        {
-            storeSeed = seed;
-            x_offset = seed * 2;
-            y_offset = seed * 2;
-            GenerateTerrain();
-        }
-    }
+    //void Update()
+    //{
+    //    // Regenerate terrain if the seed changes
+    //    if (storeSeed != seed)
+    //    {
+    //        storeSeed = seed;
+    //        x_offset = seed * 2;
+    //        y_offset = seed * 2;
+    //        GenerateTerrain();
+    //    }
+    //}
 
     private void CreateTileLayers()
     {
@@ -85,6 +84,7 @@ public class ProceduralTilemapGenerator : MonoBehaviour
             if (level != null)
             {
                 tileLayers.Add(i, level);
+                Debug.Log($"Added Level: {level}");
             }
         }
     }
@@ -114,10 +114,6 @@ public class ProceduralTilemapGenerator : MonoBehaviour
         {
             id = Mathf.Max(1, id);
         }
-        if (x < 0 || y < 0 || x >= width || y >= height)
-        {
-            Debug.LogWarning($"Tile placed outside bounds at ({x}, {y})!");
-        }
 
         Debug.Log($"GetId({x}, {y}) Perlin: {perlinValue}, Tile ID: {id}");
         return id;
@@ -130,7 +126,7 @@ public class ProceduralTilemapGenerator : MonoBehaviour
         float bias = Mathf.Pow(raw_perlin, 2); // Squaring makes lower values more frequent
         float scaled_perlin = bias * tileLayers.Count; // Scale it to available tiles
 
-        return Mathf.Clamp(scaled_perlin, 0, tileLayers.Count - 1);
+        return Mathf.Clamp(scaled_perlin, 0, tileLayers.Count);
     }
 
 
@@ -139,7 +135,10 @@ public class ProceduralTilemapGenerator : MonoBehaviour
         if (tileLayers.ContainsKey(tileId))
         {
             tilemap.SetTile(new Vector3Int(x, y, 0), tileLayers[tileId]);
-            Debug.Log($"Placed tile {tileId} at ({x}, {y})");
+            if (tileId == tileLayers.Count)
+            {
+                Debug.Log($"Placed tile {tileId} at ({x}, {y})");
+            }
         }
         else
         {

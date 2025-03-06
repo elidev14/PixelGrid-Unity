@@ -3,9 +3,11 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class WebClient : MonoBehaviour
+public class WebApiClient : Singleton<WebApiClient>
 {
+    //Url of webapi
     public string baseUrl;
+
     private string token;
 
     public void SetToken(string token)
@@ -75,6 +77,7 @@ public class WebClient : MonoBehaviour
     {
         return json.Replace("\"id\":\"\",", "");
     }
+
 }
 
 [Serializable]

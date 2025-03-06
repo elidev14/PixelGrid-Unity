@@ -14,8 +14,6 @@ public class DigitalTwin : MonoBehaviour
     public Environment2DApiClient enviroment2DApiClient;
     public Object2DApiClient object2DApiClient;
 
-    public GameObject chairPrefab;
-
 
     #region Login
 
@@ -75,7 +73,7 @@ public class DigitalTwin : MonoBehaviour
             case WebRequestData<List<Environment2D>> dataResponse:
                 List<Environment2D> environment2Ds = dataResponse.Data;
                 Debug.Log("List of environment2Ds: ");
-                environment2Ds.ForEach(environment2D => Debug.Log(environment2D.ID));
+                environment2Ds.ForEach(environment2D => Debug.Log(environment2D.id));
                 // TODO: Handle succes scenario.
                 break;
             case WebRequestError errorResponse:
@@ -96,7 +94,7 @@ public class DigitalTwin : MonoBehaviour
         switch (webRequestResponse)
         {
             case WebRequestData<Environment2D> dataResponse:
-                environment2D.ID = dataResponse.Data.ID;
+                environment2D.id = dataResponse.Data.id;
                 // TODO: Handle succes scenario.
                 break;
             case WebRequestError errorResponse:
@@ -112,7 +110,7 @@ public class DigitalTwin : MonoBehaviour
     [ContextMenu("Environment2D/Delete")]
     public async void DeleteEnvironment2D()
     {
-        IWebRequestReponse webRequestResponse = await enviroment2DApiClient.DeleteEnvironment(environment2D.ID.ToString());
+        IWebRequestReponse webRequestResponse = await enviroment2DApiClient.DeleteEnvironment(environment2D.id.ToString());
 
         switch (webRequestResponse)
         {
@@ -148,8 +146,8 @@ public class DigitalTwin : MonoBehaviour
                 {
                     if (object2D.PrefabID.ToLower() == "chair1")
                     {
-                        GameObject chair = Instantiate(chairPrefab);
-                        chair.transform.position = new Vector3(object2D.PosX, object2D.PosY, 0);
+                        //GameObject chair = Instantiate(chairPrefab);
+                        //chair.transform.position = new Vector3(object2D.PosX, object2D.PosY, 0);
                     }
                 });
 

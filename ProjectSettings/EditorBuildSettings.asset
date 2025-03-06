@@ -6,6 +6,16 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Login screen.unity
+    guid: 006dd20393158454496b3d3d8748d5f0
+  - enabled: 1
+    path: Assets/Scenes/Menu Screen.unity
+    guid: 6843d9d0eb6c9774c8bbbbabdca924c0
+  - enabled: 1
+    path: Assets/Scenes/MyWorldsMenu.unity
+    guid: da86717136b29774bac5d5ca881ecd15
+  - enabled: 1
     path: Assets/Scenes/2D World Template.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0
