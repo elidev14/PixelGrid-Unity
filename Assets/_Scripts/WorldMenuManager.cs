@@ -81,7 +81,7 @@ public class WorldMenuManager : MonoBehaviour
     public void OpenWorld()
     {
         //Add logic for if the world needs to be generated or is already existent
-        SceneManager.LoadScene("2DEnvironment");
+        SceneManager.LoadScene("CreateWorldScrene");
     }
 
 }
