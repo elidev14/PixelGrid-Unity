@@ -19,8 +19,9 @@ public class UserAuth : MonoBehaviour
         {
             case WebRequestData<string> dataResponse:
                 Debug.Log("Login succes!");
-                // TODO: Switch to menu screen
-                //SceneManager.LoadScene("2D World Template");
+
+                //replace buttons with loading icon ddisable the buttons
+
                 SceneManager.LoadScene("Menu Screen");
                 break;
             case WebRequestError errorResponse:

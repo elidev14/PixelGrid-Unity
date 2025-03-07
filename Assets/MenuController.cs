@@ -12,7 +12,6 @@ public class MenuController : MonoBehaviour
 
     public void ShowSharedWorlds()
     {
-
-
+        SceneManager.LoadScene("SharedWorld");
     }
 }

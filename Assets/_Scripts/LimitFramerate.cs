@@ -3,7 +3,6 @@ using UnityEngine;
 public class LimitFramerate : MonoBehaviour 
 {
 
-#if UNITY_EDITOR
     private int frameRate = 90;
 
     private void Start()
@@ -11,7 +10,4 @@ public class LimitFramerate : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = frameRate;
     }
-
-#endif
-
 }

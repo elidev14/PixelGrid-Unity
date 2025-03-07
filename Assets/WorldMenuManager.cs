@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class WorldMenuManager : MonoBehaviour
@@ -18,7 +17,6 @@ public class WorldMenuManager : MonoBehaviour
     public void Start()
     {
         // Check database for worlds
-
         InitMenu();
     }
 
@@ -35,6 +33,10 @@ public class WorldMenuManager : MonoBehaviour
         switch (webRequestResponse)
         {
             case WebRequestData<List<Environment2D>> dataResponse:
+
+                // Might have too override onClick on CreateNewWorldButton
+
+
                 List<Environment2D> environment2Ds = dataResponse.Data;
 
                 int availableSlot = 0;
@@ -58,8 +60,10 @@ public class WorldMenuManager : MonoBehaviour
 
                 var gO2 = Instantiate(CreateNewWorldButton);
                 gO2.transform.parent = slotSection;
+
+
                 gO2.onClick?.AddListener(OpenWorld);
-                Debug.Log("Slot [{i}] Activated with OpenWorldButton");
+                Debug.Log("Slot [{i}] Activated with CreateNewWorldButton");
 
                 // TODO: For evey slot Assign open world button / create new world button and set next slot active when there is a open world button
                 break;
@@ -76,8 +80,8 @@ public class WorldMenuManager : MonoBehaviour
 
     public void OpenWorld()
     {
-//Add logic for if the world needs to be generated or is already existent
-        SceneManager.LoadScene("2D World Template");
+        //Add logic for if the world needs to be generated or is already existent
+        SceneManager.LoadScene("2DEnvironment");
     }
 
 }
