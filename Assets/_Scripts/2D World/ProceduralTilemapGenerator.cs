@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,7 +13,7 @@ public class ProceduralTilemapGenerator : MonoBehaviour
     public UnityEvent<Tilemap> OnMapGenerated = new UnityEvent<Tilemap>();
 
     [SerializeField]
-    private GameManager gameManager;
+    private Environment2DManager gameManager;
 
     [SerializeField]
     private Tilemap tilemap;
@@ -45,7 +47,7 @@ public class ProceduralTilemapGenerator : MonoBehaviour
         // Generate a random seed if not set
         if (seed == 0)
         {
-            seed = Random.Range(1000, 999999); //Set a random seed if not provided
+            seed = UnityEngine.Random.Range(1000, 999999); //Set a random seed if not provided
         }
 
         // For debugging purposes
@@ -59,20 +61,19 @@ public class ProceduralTilemapGenerator : MonoBehaviour
 
         CreateTileLayers();
         GenerateTerrain();
+
     }
 
+    public void GenerateWorld(Object2D object2D, Environment2D environment2D)
+    {
 
-    //void Update()
-    //{
-    //    // Regenerate terrain if the seed changes
-    //    if (storeSeed != seed)
-    //    {
-    //        storeSeed = seed;
-    //        x_offset = seed * 2;
-    //        y_offset = seed * 2;
-    //        GenerateTerrain();
-    //    }
-    //}
+        width = (int)environment2D.maxLength;
+        height = (int)environment2D.maxHeight;
+
+        SetTile(Convert.ToInt32(object2D.PrefabID), (int)object2D.PosX, (int)object2D.PosY);
+
+    }
+
 
     private void CreateTileLayers()
     {
@@ -99,8 +100,22 @@ public class ProceduralTilemapGenerator : MonoBehaviour
                 SetTile(tileId, x, y);
             }
         }
+
+        // Force update of physics colliders
+        StartCoroutine(UpdateTilemapCollider());
+    }
+
+    // Coroutine to delay collider update
+    private IEnumerator UpdateTilemapCollider()
+    {
+        yield return new WaitForEndOfFrame(); // Wait for physics update
+        tilemap.gameObject.GetComponent<TilemapCollider2D>().enabled = false;
+        tilemap.gameObject.GetComponent<TilemapCollider2D>().enabled = true;
+
+        // Invoke the event now that collider is updated
         OnMapGenerated?.Invoke(tilemap);
     }
+
 
     private int GetId(int x, int y)
     {
@@ -135,18 +150,25 @@ public class ProceduralTilemapGenerator : MonoBehaviour
         if (tileLayers.ContainsKey(tileId))
         {
             tilemap.SetTile(new Vector3Int(x, y, 0), tileLayers[tileId]);
+
             var tile = new TileScriptableObject
             {
-               EnvironmentID = WorldData.GetCurrentEnvironment().id,
-               PosX = x, PosY = y,
-               SortingLayer = 0, // Need to change soon
-               ScaleY = 0,
-               ScaleX = 0,
-               RotationZ = 0,
-               PrefabID = tileLayers[tileId].name,     
+                EnvironmentID = SessionData.Instance.GetCurrentEnvironmentSessionData().Environment2D.id,
+                PosX = x,
+                PosY = y,
+                SortingLayer = 0, // Need to change soon
+                ScaleY = 0,
+                ScaleX = 0,
+                RotationZ = 0,
+                PrefabID = tileId.ToString(),
             };
 
             gameManager.AddTilesToList(tile);
+
+            if (x > width || x < 0 || y > height || y < 0)
+            {
+                Debug.LogWarning($"Tile ID {tileId} out of bounds! Skipped at ({x}, {y})");
+            }
 
             if (tileId == tileLayers.Count)
             {

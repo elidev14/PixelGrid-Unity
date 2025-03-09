@@ -22,9 +22,8 @@ public class CameraController : MonoBehaviour
     private Vector2 minBounds;
     private Vector2 maxBounds;
 
-    public void InitializeCamera(BoundsInt bounds)
+    public void InitializeCamera(Bounds bounds)
     {
-
         minBounds = new Vector2(bounds.min.x, bounds.min.y);
         maxBounds = new Vector2(bounds.max.x, bounds.max.y);
 
@@ -33,20 +32,20 @@ public class CameraController : MonoBehaviour
         mapMinY = minBounds.y;
         mapMaxY = maxBounds.y;
 
-        float worldWidth = mapMaxX;
-        float worldHeight = mapMaxY;
+        // Calculate world size
+        float worldWidth = mapMaxX - mapMinX;
+        float worldHeight = mapMaxY - mapMinY;
 
-        maxCamSize = worldWidth;
-
+        // Limit max zoom to ensure the camera never sees beyond the world
+        maxCamSize = Mathf.Min(worldWidth / (2f * Camera.aspect), worldHeight / 2f);
         minCamSize = Mathf.Max(2f, maxCamSize * 0.1f);
-
-        Debug.Log($"Camera orthographicSize: {Camera.orthographicSize}");
 
         Debug.Log($"World Bounds: minX={mapMinX}, maxX={mapMaxX}, minY={mapMinY}, maxY={mapMaxY}");
         Debug.Log($"Zoom Limits: minCamSize={minCamSize}, maxCamSize={maxCamSize}");
 
         CenterCameraOnMap();
     }
+
 
 
     private void CenterCameraOnMap()
@@ -101,6 +100,8 @@ public class CameraController : MonoBehaviour
     {
         float newSize = Camera.orthographicSize - ZoomStep;
         Camera.orthographicSize = Mathf.Clamp(newSize, minCamSize, maxCamSize);
+
+        // Apply clamping after zooming
         Camera.transform.position = ClampCamera(Camera.transform.position);
     }
 
@@ -108,24 +109,40 @@ public class CameraController : MonoBehaviour
     {
         float newSize = Camera.orthographicSize + ZoomStep;
         Camera.orthographicSize = Mathf.Clamp(newSize, minCamSize, maxCamSize);
+
+        // Apply clamping after zooming
         Camera.transform.position = ClampCamera(Camera.transform.position);
     }
+
 
     private Vector3 ClampCamera(Vector3 targetPosition)
     {
         float camHeight = Camera.orthographicSize;
         float camWidth = camHeight * Camera.aspect;
 
+        // Ensure the camera never goes beyond the map bounds
         float minX = mapMinX + camWidth;
         float maxX = mapMaxX - camWidth;
         float minY = mapMinY + camHeight;
         float maxY = mapMaxY - camHeight;
 
+        // Prevent the camera from zooming out too much if the world is smaller than the viewport
+        if (mapMaxX - mapMinX < camWidth * 2)
+        {
+            minX = maxX = (mapMinX + mapMaxX) / 2;
+        }
+        if (mapMaxY - mapMinY < camHeight * 2)
+        {
+            minY = maxY = (mapMinY + mapMaxY) / 2;
+        }
 
-        float x = Mathf.Clamp(targetPosition.x, minX, maxX);
-        float y = Mathf.Clamp(targetPosition.y, minY, maxY);
-        return new Vector3(x, y, targetPosition.z);
+        float clampedX = Mathf.Clamp(targetPosition.x, minX, maxX);
+        float clampedY = Mathf.Clamp(targetPosition.y, minY, maxY);
+
+        return new Vector3(clampedX, clampedY, targetPosition.z);
     }
+
+
 
 
     private Vector3 GetMousePosition => Camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());

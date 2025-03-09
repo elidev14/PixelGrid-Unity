@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,13 +7,17 @@ using UnityEngine.SceneManagement;
 public class WorldCreationManager : MonoBehaviour
 {
 
-    [SerializeField] TMPro.TextMeshPro worldName;
-    [SerializeField] TMPro.TextMeshPro width;
-    [SerializeField] TMPro.TextMeshPro height;
+    [SerializeField] TMP_InputField worldName;
+    [SerializeField] TMP_InputField width;
+    [SerializeField] TMP_InputField height;
 
 
     public async void GenerateWorld()
     {
+        
+        // Input validation
+
+
         var Environment2D = new Environment2D { 
             name = worldName.text,
             maxHeight = Convert.ToDouble(height.text),
@@ -21,7 +25,7 @@ public class WorldCreationManager : MonoBehaviour
         };
 
         IWebRequestReponse webRequestResponse =  await Environment2DApiClient.Instance.CreateEnvironment(Environment2D);
-        
+
         switch (webRequestResponse)
         {
             case WebRequestData<Environment2D> dataResponse:
@@ -36,12 +40,12 @@ public class WorldCreationManager : MonoBehaviour
 
                
                 // adds a new world to the global Enviroments list
-                WorldData.AddEnvironmentToList(Environment2D);
+                SessionData.Instance.AddEnvironmentToList(Environment2D);
 
                 // Sets the world as active
-                WorldData.SetCurrentEnvironment(Environment2D);
+                SessionData.Instance.SetCurrentEnvironment(Environment2D, true);
 
-                SceneManager.LoadScene("2DEnvironment");
+                SceneManager.LoadScene("Environment2D");
                 break;
             case WebRequestError errorResponse:
                 string errorMessage = errorResponse.ErrorMessage;

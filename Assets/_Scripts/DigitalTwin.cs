@@ -48,6 +48,7 @@ public class DigitalTwin : MonoBehaviour
             case WebRequestData<string> dataResponse:
                 Debug.Log("Login succes!");
                 // TODO: Todo handle succes scenario.
+
                 break;
             case WebRequestError errorResponse:
                 string errorMessage = errorResponse.ErrorMessage;

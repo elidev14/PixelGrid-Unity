@@ -26,8 +26,6 @@ public abstract class Singleton<T> : StaticInstances<T> where T : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-
     }
 }
 

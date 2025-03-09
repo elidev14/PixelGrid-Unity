@@ -925,65 +925,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 361595025}
   m_CullTransparentMesh: 1
---- !u!1 &370440843
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 370440844}
-  - component: {fileID: 370440845}
-  m_Layer: 0
-  m_Name: WorldboundsManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &370440844
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 370440843}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -216.7185, y: -45.670452, z: -0.12791443}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 438055598}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &370440845
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 370440843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de22dc4782f86774fa2255ce1844e502, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnBoundsCalculated:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 519420033}
-        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
-        m_MethodName: InitializeCamera
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &384359471
 GameObject:
   m_ObjectHideFlags: 0
@@ -1123,7 +1064,6 @@ Transform:
   m_Children:
   - {fileID: 119859441}
   - {fileID: 579928611}
-  - {fileID: 370440844}
   - {fileID: 798124063}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2447,10 +2387,10 @@ MonoBehaviour:
   OnMapGenerated:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 370440845}
+      - m_Target: {fileID: 1545028059}
         m_TargetAssemblyTypeName: WorldBoundsManager, Assembly-CSharp
-        m_MethodName: InitializeBounds
-        m_Mode: 0
+        m_MethodName: UpdateBounds
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2465,8 +2405,8 @@ MonoBehaviour:
   height: 100
   magnification: 10
   PriorityLevel:
-    level1: {fileID: 0}
-    level2: {fileID: 0}
+    level1: {fileID: 11400000, guid: f8aecd6a554b6ff4f9cf142113b0ebaa, type: 2}
+    level2: {fileID: 11400000, guid: 8974287daaa903d4f9ae088a8cf7cfa2, type: 2}
     level3: {fileID: 0}
     level4: {fileID: 0}
     level5: {fileID: 0}
@@ -3011,6 +2951,8 @@ GameObject:
   - component: {fileID: 1545028056}
   - component: {fileID: 1545028058}
   - component: {fileID: 1545028057}
+  - component: {fileID: 1545028060}
+  - component: {fileID: 1545028059}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -3183,6 +3125,71 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &1545028059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545028055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de22dc4782f86774fa2255ce1844e502, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnBoundsCalculated:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 519420033}
+        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+        m_MethodName: InitializeCamera
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!19719996 &1545028060
+TilemapCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545028055}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_MaximumTileChangeCount: 1000
+  m_ExtrusionFactor: 0
+  m_UseDelaunayMesh: 0
 --- !u!1 &1647306971
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,19 +5,15 @@ using UnityEngine.Tilemaps;
 public class WorldBoundsManager : MonoBehaviour
 {
 
-    public UnityEvent<BoundsInt> OnBoundsCalculated = new UnityEvent<BoundsInt>();
+    public UnityEvent<Bounds> OnBoundsCalculated = new UnityEvent<Bounds>();
 
-    public void InitializeBounds(Tilemap tilemap)
+
+    public void UpdateBounds()
     {
-        if (tilemap == null)
-        {
-            Debug.LogError("WorldBoundsManager: Received null Tilemap!");
-            return;
-        }
-
-        BoundsInt bounds = tilemap.cellBounds;
-
+        var bounds = GetComponent<TilemapCollider2D>().bounds;
+        Debug.Log($"Bounds Updated: {bounds}");
         OnBoundsCalculated?.Invoke(bounds);
     }
+
 
 }

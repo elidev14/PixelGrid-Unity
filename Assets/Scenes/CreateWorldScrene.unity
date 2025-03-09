@@ -1153,6 +1153,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ee6064ec1001c54bae06fd18e1ac428, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  worldName: {fileID: 179990925}
+  width: {fileID: 708309307}
+  height: {fileID: 1972872944}
 --- !u!1 &707523456
 GameObject:
   m_ObjectHideFlags: 0
@@ -1970,7 +1973,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -12.11, y: -230.6}
+  m_AnchoredPosition: {x: -12.11, y: -257.24}
   m_SizeDelta: {x: 440.4, y: 68.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &966368807
@@ -2101,7 +2104,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -30.2, y: -67}
+  m_AnchoredPosition: {x: -30.2, y: -97.7}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1197360329
@@ -2659,7 +2662,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1519183166}
   m_Layer: 5
-  m_Name: Template name
+  m_Name: World name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2720,8 +2723,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 9.993754, y: 271.2}
-  m_SizeDelta: {x: 415.8, y: 50}
+  m_AnchoredPosition: {x: 9.993754, y: 368.5}
+  m_SizeDelta: {x: 526.2, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1574462891
 MonoBehaviour:
@@ -2770,15 +2773,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 57.1
-  m_fontSizeBase: 50
+  m_fontSize: 80
+  m_fontSizeBase: 80
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0

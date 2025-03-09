@@ -8,6 +8,7 @@ public class UserAuth : MonoBehaviour
 
 
     // For debugging purposes
+
     // public User user;
 
     [Header("Login UI")]
