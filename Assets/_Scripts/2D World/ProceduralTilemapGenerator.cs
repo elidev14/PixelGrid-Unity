@@ -27,7 +27,7 @@ public class ProceduralTilemapGenerator : MonoBehaviour
     private int edgeOffset = 3;
 
     [SerializeField]
-    private FixedSizedContainer<CustomTile> PriorityLevel;
+    private FixedSizedContainer<TileScriptableObject> PriorityLevel;
 
     [SerializeField]
     private int seed = 0; // Default seed, 0 means random
@@ -83,7 +83,7 @@ public class ProceduralTilemapGenerator : MonoBehaviour
             var level = PriorityLevel[i];
             if (level != null)
             {
-                tileLayers.Add(i, level);
+                tileLayers.Add(i, level.customTile);
                 Debug.Log($"Added Level: {level}");
             }
         }
@@ -135,6 +135,19 @@ public class ProceduralTilemapGenerator : MonoBehaviour
         if (tileLayers.ContainsKey(tileId))
         {
             tilemap.SetTile(new Vector3Int(x, y, 0), tileLayers[tileId]);
+            var tile = new TileScriptableObject
+            {
+               EnvironmentID = WorldData.GetCurrentEnvironment().id,
+               PosX = x, PosY = y,
+               SortingLayer = 0, // Need to change soon
+               ScaleY = 0,
+               ScaleX = 0,
+               RotationZ = 0,
+               PrefabID = tileLayers[tileId].name,     
+            };
+
+            gameManager.AddTilesToList(tile);
+
             if (tileId == tileLayers.Count)
             {
                 Debug.Log($"Placed tile {tileId} at ({x}, {y})");

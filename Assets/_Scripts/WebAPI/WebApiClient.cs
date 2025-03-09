@@ -15,37 +15,39 @@ public class WebApiClient : Singleton<WebApiClient>
         this.token = token;
     }
 
+
     public async Awaitable<IWebRequestReponse> SendGetRequest(string route)
     {
-        UnityWebRequest webRequest = CreateWebRequest("GET", route, "");
+        UnityWebRequest webRequest = CreateWebRequest(RequestType.GET, route, "");
         return await SendWebRequest(webRequest);
     }
 
     public async Awaitable<IWebRequestReponse> SendPostRequest(string route, string data)
     {
-        UnityWebRequest webRequest = CreateWebRequest("POST", route, data);
+        UnityWebRequest webRequest = CreateWebRequest(RequestType.POST, route, data);
         return await SendWebRequest(webRequest);
     }
 
     public async Awaitable<IWebRequestReponse> SendPutRequest(string route, string data)
     {
-        UnityWebRequest webRequest = CreateWebRequest("PUT", route, data);
+        UnityWebRequest webRequest = CreateWebRequest(RequestType.PUT, route, data);
         return await SendWebRequest(webRequest);
     }
 
     public async Awaitable<IWebRequestReponse> SendDeleteRequest(string route)
     {
-        UnityWebRequest webRequest = CreateWebRequest("DELETE", route, "");
+        UnityWebRequest webRequest = CreateWebRequest(RequestType.DELETE, route, "");
         return await SendWebRequest(webRequest);
     }
 
-    private UnityWebRequest CreateWebRequest(string type, string route, string data)
+
+    private UnityWebRequest CreateWebRequest(RequestType type, string route, string data)
     {
         string url = baseUrl + route;
         Debug.Log("Creating " + type + " request to " + url + " with data: " + data);
 
         data = RemoveIdFromJson(data); // Backend throws error if it receiving empty strings as a GUID value.
-        var webRequest = new UnityWebRequest(url, type);
+        var webRequest = new UnityWebRequest(url, type.ToString());
         byte[] dataInBytes = new UTF8Encoding().GetBytes(data);
         webRequest.uploadHandler = new UploadHandlerRaw(dataInBytes);
         webRequest.downloadHandler = new DownloadHandlerBuffer();
@@ -85,4 +87,13 @@ public class Token
 {
     public string tokenType;
     public string accessToken;
+}
+
+
+public enum RequestType
+{
+    GET,
+    POST,
+    PUT,
+DELETE,
 }

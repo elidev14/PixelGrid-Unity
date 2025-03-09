@@ -3,6 +3,8 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro.EditorUtilities;
+using TMPro;
 
 public class WorldMenuManager : MonoBehaviour
 {
@@ -13,6 +15,9 @@ public class WorldMenuManager : MonoBehaviour
     [SerializeField] private Button CreateNewWorldButton;
 
     [SerializeField] private Button OpenWorldButton;
+
+
+
 
     public void Start()
     {
@@ -35,9 +40,7 @@ public class WorldMenuManager : MonoBehaviour
             case WebRequestData<List<Environment2D>> dataResponse:
 
                 // Might have too override onClick on CreateNewWorldButton
-
-
-                List<Environment2D> environment2Ds = dataResponse.Data;
+                 List<Environment2D> environment2Ds = dataResponse.Data;
 
                 int availableSlot = 0;
                 Debug.Log("List of environment2Ds: ");
@@ -50,7 +53,11 @@ public class WorldMenuManager : MonoBehaviour
 
                     if (environment2D != null)
                     {
+                        WorldData.AddEnvironmentToList(environment2D); // Adds the existing Environment to the globals Environment list
                         var gO1 = Instantiate(OpenWorldButton);
+                        gO1.GetComponentInChildren<TextMeshProUGUI>().text = environment2D.name;
+                        // TODO: Modify Onclick event
+                        // gO1.onClick?.AddListener(OpenWorld(environment2D));
                         gO1.transform.parent = slotSection;
                         Debug.Log("Slot [{i}] Activated with OpenWorldButton");
                         availableSlot = i + 1;
@@ -62,7 +69,7 @@ public class WorldMenuManager : MonoBehaviour
                 gO2.transform.parent = slotSection;
 
 
-                gO2.onClick?.AddListener(OpenWorld);
+                gO2.onClick?.AddListener(CreateWorld);
                 Debug.Log("Slot [{i}] Activated with CreateNewWorldButton");
 
                 // TODO: For evey slot Assign open world button / create new world button and set next slot active when there is a open world button
@@ -78,10 +85,17 @@ public class WorldMenuManager : MonoBehaviour
 
     }
 
-    public void OpenWorld()
+    private void CreateWorld()
     {
         //Add logic for if the world needs to be generated or is already existent
         SceneManager.LoadScene("CreateWorldScrene");
+    }
+
+    private void OpenWorld(Environment2D environment2D)
+    {
+        //Add logic for if the world needs to be generated or is already existent
+        WorldData.SetCurrentEnvironment(environment2D);
+        SceneManager.LoadScene("2DEnvironment");
     }
 
 }

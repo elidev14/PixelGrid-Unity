@@ -510,7 +510,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Already have an account?
+  m_text: Heb je al een account?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -600,6 +600,7 @@ GameObject:
   - component: {fileID: 155009130}
   - component: {fileID: 155009132}
   - component: {fileID: 155009131}
+  - component: {fileID: 155009133}
   m_Layer: 5
   m_Name: RegisterPanel
   m_TagString: Untagged
@@ -669,6 +670,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 155009129}
   m_CullTransparentMesh: 1
+--- !u!114 &155009133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155009129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 413e6cb087e885c4fa0c4cb5000ff648, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  submitBotton: {fileID: 1886183240}
 --- !u!1 &185454471
 GameObject:
   m_ObjectHideFlags: 0
@@ -2323,7 +2337,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 281.17, y: 0}
+  m_AnchoredPosition: {x: 254.81, y: 0}
   m_SizeDelta: {x: 340.51, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &745873887
@@ -2414,7 +2428,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Log In
+  m_text: Log in
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2732,7 +2746,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 293.8, y: 0}
+  m_AnchoredPosition: {x: 286.78, y: 0}
   m_SizeDelta: {x: 347.8, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &988888145
@@ -3035,6 +3049,7 @@ GameObject:
   - component: {fileID: 1323876297}
   - component: {fileID: 1323876299}
   - component: {fileID: 1323876298}
+  - component: {fileID: 1323876300}
   m_Layer: 5
   m_Name: LoginPanel
   m_TagString: Untagged
@@ -3104,6 +3119,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1323876296}
   m_CullTransparentMesh: 1
+--- !u!114 &1323876300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323876296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 413e6cb087e885c4fa0c4cb5000ff648, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  submitBotton: {fileID: 92917805}
 --- !u!1 &1351089688
 GameObject:
   m_ObjectHideFlags: 0
@@ -3361,10 +3389,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd4976055d663f4698c07ac32d22354, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  user:
-    Email: testgebruiker4231@niet.avans.com
-    Password: ipQvh0na#a.-@_TtBYCc_3SH,lVkC(Ow4[6_m'c30K}r[XIy!U
+  loginUsername: {fileID: 1854381578}
+  loginPassword: {fileID: 442033587}
+  registerUsername: {fileID: 618910315}
+  registerPassword: {fileID: 92856608}
   userApiClient: {fileID: 1300579992}
+  loginPanel: {fileID: 1323876296}
+  registerPanel: {fileID: 155009129}
 --- !u!1 &1495700070
 GameObject:
   m_ObjectHideFlags: 0
@@ -3892,7 +3923,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Gebruikersnam
+  m_text: Gebruikersnaam
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
