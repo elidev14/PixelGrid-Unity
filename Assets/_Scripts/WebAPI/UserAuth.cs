@@ -105,7 +105,10 @@ public class UserAuth : MonoBehaviour
             {
                 case WebRequestData<string> dataResponse:
                     Debug.Log("Register succes!");
-                    // TODO: Handle succes scenario;
+
+
+                    // Maybe return back to login panel to verify login
+                    SceneManager.LoadScene("Menu Screen");
 
                     break;
                 case WebRequestError errorResponse:

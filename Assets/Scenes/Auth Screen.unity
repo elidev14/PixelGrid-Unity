@@ -1964,16 +1964,17 @@ MonoBehaviour:
     ownerUserId: errorbuggger
     maxHeight: 50
     maxLength: 50
+    Seed: 0
   object2D:
-    ID: 
-    EnvironmentID: 
-    PrefabID: 
-    PosX: 0
-    PosY: 0
-    ScaleX: 0
-    ScaleY: 0
-    RotationZ: 0
-    SortingLayer: 0
+    id: 
+    environmentID: 
+    prefabID: 
+    posX: 0
+    posY: 0
+    scaleX: 0
+    scaleY: 0
+    rotationZ: 0
+    sortingLayer: 0
   userApiClient: {fileID: 1300579992}
   enviroment2DApiClient: {fileID: 452345051}
   object2DApiClient: {fileID: 452345050}
