@@ -12,8 +12,6 @@ public class ProceduralTilemapGenerator : MonoBehaviour
 
     public UnityEvent<Tilemap> OnMapGenerated = new UnityEvent<Tilemap>();
 
-    [SerializeField]
-    private Environment2DManager gameManager;
 
     [SerializeField]
     private Tilemap tilemap;
@@ -29,10 +27,10 @@ public class ProceduralTilemapGenerator : MonoBehaviour
     private int edgeOffset = 3;
 
     [SerializeField]
-    private FixedSizedContainer<TileScriptableObject> PriorityLevel;
+    private FixedSizedContainer<CustomTile> PriorityLevel;
 
     [SerializeField]
-    private int seed = 0; // Default seed, 0 means random
+    private int _seed = 0; // Default seed, 0 means random
 
     private Dictionary<int, CustomTile> tileLayers; // Stores tile layers
 
@@ -40,22 +38,25 @@ public class ProceduralTilemapGenerator : MonoBehaviour
     private int y_offset;
 
 
-    private float storeSeed = 0; // Default seed, 0 means random
 
-    public void GenerateWorld()
+
+    public void GenerateWorld(int width, int height, int seed)
     {
         // Generate a random seed if not set
         if (seed == 0)
         {
             seed = UnityEngine.Random.Range(1000, 999999); //Set a random seed if not provided
+            _seed = seed;
         }
 
-        // For debugging purposes
-        storeSeed = seed;
+        
+
+        this.width = width;
+        this.height = height;
 
         // Use the seed to generate consistent terrain
-        x_offset = seed * 2;
-        y_offset = seed * 2;
+        x_offset = _seed * 2;
+        y_offset = _seed * 2;
 
         Debug.Log($"Using Seed: {seed}");
 
@@ -64,14 +65,14 @@ public class ProceduralTilemapGenerator : MonoBehaviour
 
     }
 
-    public void GenerateWorld(Object2D object2D, Environment2D environment2D)
+    public int GetSeed()
+    { 
+        return _seed;
+    }
+
+    public void SetTile(Object2D object2D)
     {
-
-        width = (int)environment2D.maxLength;
-        height = (int)environment2D.maxHeight;
-
-        SetTile(Convert.ToInt32(object2D.PrefabID), (int)object2D.PosX, (int)object2D.PosY);
-
+        SetTile(Convert.ToInt32(object2D.prefabID), (int)object2D.posX, (int)object2D.posY);
     }
 
 
@@ -84,7 +85,7 @@ public class ProceduralTilemapGenerator : MonoBehaviour
             var level = PriorityLevel[i];
             if (level != null)
             {
-                tileLayers.Add(i, level.customTile);
+                tileLayers.Add(i, level);
                 Debug.Log($"Added Level: {level}");
             }
         }
@@ -151,28 +152,18 @@ public class ProceduralTilemapGenerator : MonoBehaviour
         {
             tilemap.SetTile(new Vector3Int(x, y, 0), tileLayers[tileId]);
 
-            var tile = new TileScriptableObject
-            {
-                EnvironmentID = SessionData.Instance.GetCurrentEnvironmentSessionData().Environment2D.id,
-                PosX = x,
-                PosY = y,
-                SortingLayer = 0, // Need to change soon
-                ScaleY = 0,
-                ScaleX = 0,
-                RotationZ = 0,
-                PrefabID = tileId.ToString(),
-            };
-
-            gameManager.AddTilesToList(tile);
 
             if (x > width || x < 0 || y > height || y < 0)
             {
                 Debug.LogWarning($"Tile ID {tileId} out of bounds! Skipped at ({x}, {y})");
+
+                return;
             }
 
             if (tileId == tileLayers.Count)
             {
                 Debug.Log($"Placed tile {tileId} at ({x}, {y})");
+                return;
             }
         }
         else

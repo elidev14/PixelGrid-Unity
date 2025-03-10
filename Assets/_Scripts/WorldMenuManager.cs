@@ -54,7 +54,7 @@ public class WorldMenuManager : MonoBehaviour
 
                     if (environment2D != null)
                     {
-                        SessionData.Instance.AddEnvironmentToList(environment2D); // Adds the existing Environment to the globals Environment list
+                        SessionDataManager.Instance.AddEnvironmentToList(environment2D); // Adds the existing Environment to the globals Environment list
                         var gO1 = Instantiate(OpenWorldButton);
                         gO1.GetComponentInChildren<TextMeshProUGUI>().text = environment2D.name;
                         // TODO: Modify Onclick event
@@ -94,7 +94,7 @@ public class WorldMenuManager : MonoBehaviour
     private void OpenWorld(Environment2D environment2D)
     {
         //Add logic for if the world needs to be generated or is already existent
-        SessionData.Instance.SetCurrentEnvironment(environment2D, false);
+        SessionDataManager.Instance.SetCurrentEnvironment(environment2D, false);
         SceneManager.LoadScene("Environment2D");
     }
 

@@ -136,7 +136,7 @@ public class DigitalTwin : MonoBehaviour
     [ContextMenu("Object2D/Read all")]
     public async void ReadObject2Ds()
     {
-        IWebRequestReponse webRequestResponse = await object2DApiClient.ReadObject2Ds(object2D.EnvironmentID.ToString());
+        IWebRequestReponse webRequestResponse = await object2DApiClient.ReadObject2Ds(object2D.environmentID.ToString());
 
         switch (webRequestResponse)
         {
@@ -145,7 +145,7 @@ public class DigitalTwin : MonoBehaviour
                 Debug.Log("List of object2Ds: " + object2Ds);
                 object2Ds.ForEach(object2D =>
                 {
-                    if (object2D.PrefabID.ToLower() == "chair1")
+                    if (object2D.prefabID.ToLower() == "chair1")
                     {
                         //GameObject chair = Instantiate(chairPrefab);
                         //chair.transform.position = new Vector3(object2D.PosX, object2D.PosY, 0);
@@ -171,7 +171,7 @@ public class DigitalTwin : MonoBehaviour
         switch (webRequestResponse)
         {
             case WebRequestData<Object2D> dataResponse:
-                object2D.ID = dataResponse.Data.ID;
+                object2D.id = dataResponse.Data.id;
                 // TODO: Handle succes scenario.
                 break;
             case WebRequestError errorResponse:

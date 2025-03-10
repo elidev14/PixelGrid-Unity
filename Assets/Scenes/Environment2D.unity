@@ -1223,7 +1223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21e6d4e309e0ee479764dd48a85adfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terrainGenerator: {fileID: 1227746123}
+  ProceduralTilemapGenerator: {fileID: 1227746123}
 --- !u!1001 &609217523
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2191,16 +2191,17 @@ MonoBehaviour:
     ownerUserId: 
     maxHeight: 0
     maxLength: 0
+    Seed: 0
   object2D:
-    ID: 
-    EnvironmentID: 
-    PrefabID: 
-    PosX: 0
-    PosY: 0
-    ScaleX: 0
-    ScaleY: 0
-    RotationZ: 0
-    SortingLayer: 0
+    id: 
+    environmentID: 
+    prefabID: 
+    posX: 0
+    posY: 0
+    scaleX: 0
+    scaleY: 0
+    rotationZ: 0
+    sortingLayer: 0
   userApiClient: {fileID: 0}
   enviroment2DApiClient: {fileID: 0}
   object2DApiClient: {fileID: 0}
@@ -2399,18 +2400,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  gameManager: {fileID: 579928612}
   tilemap: {fileID: 1545028058}
   width: 100
   height: 100
   magnification: 10
   PriorityLevel:
-    level1: {fileID: 11400000, guid: f8aecd6a554b6ff4f9cf142113b0ebaa, type: 2}
-    level2: {fileID: 11400000, guid: 8974287daaa903d4f9ae088a8cf7cfa2, type: 2}
+    level1: {fileID: 11400000, guid: 3c5b451324827544d90cce69817bce1d, type: 2}
+    level2: {fileID: 11400000, guid: 7d4818accef82ff429227aca63746a1f, type: 2}
     level3: {fileID: 0}
     level4: {fileID: 0}
     level5: {fileID: 0}
-  seed: 0
+  _seed: 0
 --- !u!1 &1248493555
 GameObject:
   m_ObjectHideFlags: 0

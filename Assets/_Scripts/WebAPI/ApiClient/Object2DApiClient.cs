@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using System.Threading.Tasks;
 
 public class Object2DApiClient : Singleton<Object2DApiClient>
 {
 
-    public async Awaitable<IWebRequestReponse> ReadObject2Ds(string environmentId, Action<IWebRequestReponse> callback = null)
+    internal async Awaitable<IWebRequestReponse> ReadObject2Ds(string environmentId, Action<IWebRequestReponse> callback = null)
     {
         string route = "/Environment2D/" + environmentId + "/Object2D";
 
@@ -14,9 +15,9 @@ public class Object2DApiClient : Singleton<Object2DApiClient>
         return ParseObject2DListResponse(webRequestResponse);
     }
 
-    public async Awaitable<IWebRequestReponse> CreateObject2D(Object2D object2D, Action<IWebRequestReponse> callback = null)
+    internal async Awaitable<IWebRequestReponse> CreateObject2D(Object2D object2D, Action<IWebRequestReponse> callback = null)
     {
-        string route = "/Environment2D/" + object2D.EnvironmentID + "/Object2D";
+        string route = "/Environment2D/" + object2D.environmentID + "/Object2D";
         string data = JsonUtility.ToJson(object2D);
 
         IWebRequestReponse webRequestResponse = await WebApiClient.Instance.SendPostRequest(route, data);
@@ -25,9 +26,9 @@ public class Object2DApiClient : Singleton<Object2DApiClient>
         return ParseObject2DResponse(webRequestResponse);
     }
 
-    public async Awaitable<IWebRequestReponse> UpdateObject2D(Object2D object2D, Action<IWebRequestReponse> callback = null)
+    internal async Awaitable<IWebRequestReponse> UpdateObject2D(Object2D object2D, Action<IWebRequestReponse> callback = null)
     {
-        string route = "/Environment2D/" + object2D.EnvironmentID + "/Object2D";
+        string route = "/Environment2D/" + object2D.environmentID + "/Object2D";
         string data = JsonUtility.ToJson(object2D);
 
         IWebRequestReponse webRequestResponse = await WebApiClient.Instance.SendPutRequest(route, data);
@@ -37,9 +38,11 @@ public class Object2DApiClient : Singleton<Object2DApiClient>
         return webRequestResponse;
     }
 
-    public async Awaitable<IWebRequestReponse> DeleteObject(string environmentId, string objectID, Action<IWebRequestReponse> callback = null)
+    internal async Awaitable<IWebRequestReponse> DeleteObject(string environmentID, string objectID, Action<IWebRequestReponse> callback = null)
     {
-        string route = "/Environment2D/" + environmentId + "/Object2D/" + objectID;
+        if (string.IsNullOrEmpty(environmentID) || string.IsNullOrEmpty(objectID))
+            return new WebRequestError("Invalid input: Environment ID or object ID is null");
+        string route = "/Environment2D/" + environmentID + "/Object2D/" + objectID;
         IWebRequestReponse webRequestResponse = await WebApiClient.Instance.SendDeleteRequest(route);
 
         callback?.Invoke(webRequestResponse);
@@ -73,4 +76,7 @@ public class Object2DApiClient : Singleton<Object2DApiClient>
                 return webRequestResponse;
         }
     }
+
+
+
 }

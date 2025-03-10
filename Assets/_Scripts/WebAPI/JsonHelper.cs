@@ -16,6 +16,7 @@ public static class JsonHelper
         Token token = JsonUtility.FromJson<Token>(data);
         return token.accessToken;
     }
+
 }
 
 [Serializable]
