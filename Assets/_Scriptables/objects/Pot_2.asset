@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c5af81eaef75ee439c2b2f0b62aee03, type: 3}
+  m_Name: Pot_2
+  m_EditorClassIdentifier: 
+  ID: 
+  EnvironmentID: 
+  PrefabID: Pot_2
+  PosX: 0
+  PosY: 0
+  ScaleX: 0
+  ScaleY: 0
+  RotationZ: 0
+  SortingLayer: 0
+  TilePrefab: {fileID: 3028489058339217616, guid: df66b23901a59ac4484eeefd04066030, type: 3}

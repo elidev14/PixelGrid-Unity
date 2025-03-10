@@ -10,11 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c5af81eaef75ee439c2b2f0b62aee03, type: 3}
-  m_Name: GrassTileObject
+  m_Name: House
   m_EditorClassIdentifier: 
-  id: 
-  name: 
-  ownerUserId: 
-  maxHeight: 0
-  maxLength: 0
-  customTile: {fileID: 11400000, guid: 3c5b451324827544d90cce69817bce1d, type: 2}
+  ID: 
+  EnvironmentID: 
+  PrefabID: House
+  PosX: 0
+  PosY: 0
+  ScaleX: 0
+  ScaleY: 0
+  RotationZ: 0
+  SortingLayer: 0
+  TilePrefab: {fileID: 4938386111346371496, guid: cc0e0bc87a5e8824780be3cc8a5c94fd, type: 3}
