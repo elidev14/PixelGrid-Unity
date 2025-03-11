@@ -1150,12 +1150,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 659738832}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ee6064ec1001c54bae06fd18e1ac428, type: 3}
+  m_Script: {fileID: 11500000, guid: 4bd90909ab5b6a8449665ab15d0a10dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   worldName: {fileID: 179990925}
   width: {fileID: 708309307}
   height: {fileID: 1972872944}
+  LoadEnvironment2D: {fileID: 7834104925678744197, guid: 1f2bab5d02d705443a8dc47797f3c0c5, type: 3}
 --- !u!1 &707523456
 GameObject:
   m_ObjectHideFlags: 0

@@ -27,6 +27,9 @@ public class UserAuth : MonoBehaviour
     [SerializeField] private GameObject loginPanel;
     [SerializeField] private GameObject registerPanel;
 
+    [SerializeField] private SceneLoader LoadMenuScreen;
+    [SerializeField] private SceneLoader LoadSharedWorld;
+
     private bool IsLoggingIn = false;
 
     private void Start()
@@ -42,10 +45,10 @@ public class UserAuth : MonoBehaviour
 
         IsLoggingIn = true;
 
-        var user = new User 
-        { 
-          Email = loginUsername.text,
-          Password = loginPassword.text
+        var user = new User
+        {
+            Email = loginUsername.text,
+            Password = loginPassword.text
         };
 
         if (CheckInputValidation(user))
@@ -59,7 +62,7 @@ public class UserAuth : MonoBehaviour
 
                     //replace buttons with loading icon ddisable the buttons
 
-                    SceneManager.LoadScene("Menu Screen");
+                    LoadMenuScreen.GoToSceneByName();
                     break;
                 case WebRequestError errorResponse:
                     string errorMessage = errorResponse.ErrorMessage;
@@ -69,7 +72,8 @@ public class UserAuth : MonoBehaviour
                 default:
                     throw new NotImplementedException("No implementation for webRequestResponse of class: " + webRequestResponse.GetType());
             }
-        }else
+        }
+        else
         {
             // TODO: Add red text to inputfield that is null
             if (string.IsNullOrEmpty(loginUsername.text))
@@ -108,7 +112,7 @@ public class UserAuth : MonoBehaviour
 
 
                     // Maybe return back to login panel to verify login
-                    SceneManager.LoadScene("Menu Screen");
+                    LoadMenuScreen.GoToSceneByName();
 
                     break;
                 case WebRequestError errorResponse:
@@ -137,7 +141,7 @@ public class UserAuth : MonoBehaviour
     }
 
     private bool CheckInputValidation(User user)
-    { 
+    {
         return !string.IsNullOrEmpty(user.Email) || !string.IsNullOrEmpty(user.Password);
     }
 

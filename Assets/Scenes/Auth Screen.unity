@@ -3220,7 +3220,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1356373302}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 973e9fb38b2a1a3498935d055d085546, type: 3}
+  m_Script: {fileID: 11500000, guid: d3b47291c3605a64ab29bffed1532f44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1395171795
@@ -3442,6 +3442,8 @@ MonoBehaviour:
   userApiClient: {fileID: 1300579992}
   loginPanel: {fileID: 1323876296}
   registerPanel: {fileID: 155009129}
+  LoadMenuScreen: {fileID: 1166196665443179661, guid: 75395f50533dd0442a4c3e7d90d0d57b, type: 3}
+  LoadSharedWorld: {fileID: 4141674599605499623, guid: 99506855ab647254eae60e1aa3576c6d, type: 3}
 --- !u!1 &1495700070
 GameObject:
   m_ObjectHideFlags: 0

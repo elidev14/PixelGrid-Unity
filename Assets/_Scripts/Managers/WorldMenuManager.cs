@@ -15,6 +15,9 @@ public class WorldMenuManager : MonoBehaviour
 
     [SerializeField] private Button OpenWorldButton;
 
+    [SerializeField] private SceneLoader LoadCreationWorld;
+    [SerializeField] private SceneLoader LoadEnvironment2D;
+
 
 
 
@@ -39,7 +42,7 @@ public class WorldMenuManager : MonoBehaviour
             case WebRequestData<List<Environment2D>> dataResponse:
 
                 // Might have too override onClick on CreateNewWorldButton
-                 List<Environment2D> environment2Ds = dataResponse.Data;
+                List<Environment2D> environment2Ds = dataResponse.Data;
 
                 environment2Ds.Reverse();
 
@@ -59,7 +62,7 @@ public class WorldMenuManager : MonoBehaviour
                         gO1.GetComponentInChildren<TextMeshProUGUI>().text = environment2D.name;
                         // TODO: Modify Onclick event
                         gO1.onClick?.AddListener(() => OpenWorld(environment2D));
-                        gO1.transform.SetParent (slotSection);
+                        gO1.transform.SetParent(slotSection);
                         availableSlots--;
                     }
                 }
@@ -88,14 +91,14 @@ public class WorldMenuManager : MonoBehaviour
     private void CreateWorld()
     {
         //Add logic for if the world needs to be generated or is already existent
-        SceneManager.LoadScene("CreateWorldScrene");
+        LoadCreationWorld.GoToSceneByName();
     }
 
     private void OpenWorld(Environment2D environment2D)
     {
         //Add logic for if the world needs to be generated or is already existent
         SessionDataManager.Instance.SetCurrentEnvironment(environment2D, false);
-        SceneManager.LoadScene("Environment2D");
+        LoadEnvironment2D.GoToSceneByName();
     }
 
 }

@@ -5,13 +5,16 @@ using UnityEngine.SceneManagement;
 public class MenuController : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    [SerializeField] private SceneLoader LoadMyWorldsMenu;
+    [SerializeField] private SceneLoader LoadSharedWorld;
     public void ShowMyWorlds()
     {
-        SceneManager.LoadScene("MyWorldsMenu");
+        LoadMyWorldsMenu.GoToSceneByName();
     }
 
     public void ShowSharedWorlds()
     {
-        SceneManager.LoadScene("SharedWorld");
+        LoadSharedWorld.GoToSceneByName();
     }
 }

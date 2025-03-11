@@ -11,10 +11,12 @@ public class Environment2DManager : MonoBehaviour
 {
     [SerializeField] private ProceduralTilemapGenerator ProceduralTilemapGenerator;
 
+    [SerializeField] private SceneLoader LoadWorldMenuScreen;
+
     private bool IsSaving;
 
 
-    private void Awake()
+    private void Start()
     {
 
         if (SessionDataManager.Instance.GetCurrentEnvironmentSessionData().IsNewWorld)
@@ -107,7 +109,7 @@ public class Environment2DManager : MonoBehaviour
 
     public void ReturnBackToMenu()
     {
-        SceneManager.LoadScene("MyWorldsMenu");
+        LoadWorldMenuScreen.GoToSceneByName();
     }
 
     private async void SaveObject2D(string environmentID)

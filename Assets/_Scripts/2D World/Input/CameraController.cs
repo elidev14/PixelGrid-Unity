@@ -82,19 +82,19 @@ public class CameraController : MonoBehaviour
         _isDragging = ctx.started || ctx.performed;
     }
 
-    public void ScrollZoom(InputAction.CallbackContext ctx)
-    {
-        float scroll = ctx.ReadValue<float>();
+    //public void ScrollZoom(InputAction.CallbackContext ctx)
+    //{
+    //    float scroll = ctx.ReadValue<float>();
 
-        if (scroll > 0)
-        {
-            ZoomIn();
-        }
-        else if (scroll < 0)
-        {
-            ZoomOut();
-        }
-    }
+    //    if (scroll > 0)
+    //    {
+    //        ZoomIn();
+    //    }
+    //    else if (scroll < 0)
+    //    {
+    //        ZoomOut();
+    //    }
+    //}
 
     public void ZoomIn()
     {
