@@ -39,7 +39,7 @@ public class Object2DHandler : MonoBehaviour
             rotationZ = transform.eulerAngles.z,
             scaleX = transform.localScale.x,
             scaleY = transform.localScale.y,
-            sortingLayer = GetComponent<SpriteRenderer>()?.sortingOrder ?? 0
+            sortingLayer = 0
         };
     }
 }

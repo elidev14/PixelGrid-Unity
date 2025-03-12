@@ -1,96 +1,142 @@
 using System.Collections.Generic;
-using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class WorldMenuManager : MonoBehaviour
 {
-
-
     [SerializeField] private Transform slotSection;
-
     [SerializeField] private Button CreateNewWorldButton;
-
     [SerializeField] private Button OpenWorldButton;
-
+    [SerializeField] private Button EditButton; // De edit button die de delete buttons activeert
     [SerializeField] private SceneLoader LoadCreationWorld;
     [SerializeField] private SceneLoader LoadEnvironment2D;
     [SerializeField] private SceneLoader LoadMenu;
 
 
 
+    private bool deleteButtonsVisible = false;
+    private List<Button> deleteWorldButtons = new List<Button>(); 
 
     public void Start()
     {
-        // Check database for worlds
+        // Initialisatie van het menu
         InitMenu();
+
+        // Voeg een listener toe voor de EditButton
+        EditButton.onClick.AddListener(ActivateDeleteButtons);
     }
 
     private async void InitMenu()
     {
-
         IWebRequestReponse webRequestResponse = await Environment2DApiClient.Instance.ReadEnvironment2Ds();
 
         switch (webRequestResponse)
         {
             case WebRequestData<List<Environment2D>> dataResponse:
-
-                // Might have too override onClick on CreateNewWorldButton
                 List<Environment2D> environment2Ds = dataResponse.Data;
-
                 environment2Ds.Reverse();
 
                 int availableSlots = 5;
                 Debug.Log("List of environment2Ds: ");
 
-                for (var i = 0; i < environment2Ds.Count; i++)
+                foreach (var environment2D in environment2Ds)
                 {
-                    var environment2D = environment2Ds[i];
-
                     if (environment2D != null)
                     {
-                        SessionDataManager.Instance.AddEnvironmentToList(environment2D); // Adds the existing Environment to the globals Environment list
-                        var gO1 = Instantiate(OpenWorldButton);
-                        gO1.GetComponentInChildren<TextMeshProUGUI>().text = environment2D.name;
-                        // TODO: Modify Onclick event
-                        gO1.onClick?.AddListener(() => OpenWorld(environment2D));
-                        gO1.transform.SetParent(slotSection);
+                        // Voeg de omgeving toe aan de lijst
+                        SessionDataManager.Instance.AddEnvironmentToList(environment2D); 
+                        var worldButton = Instantiate(OpenWorldButton);
+                        worldButton.GetComponentInChildren<TextMeshProUGUI>().text = environment2D.name;
+
+                        // Voeg de delete button toe en verberg deze in eerste instantie
+                        Button deleteButton = worldButton.transform.Find("DeleteWorldButton").GetComponent<Button>();
+                        deleteButton.gameObject.SetActive(false); // Verberg de delete button eerst
+                        deleteButton.onClick?.AddListener(() => DeleteWorld(environment2D, worldButton));
+
+                        // Voeg de open world listener toe
+                        worldButton.onClick?.AddListener(() => OpenWorld(environment2D));
+                        worldButton.transform.SetParent(slotSection);
+
+                        // Voeg de delete button toe aan de lijst
+                        deleteWorldButtons.Add(deleteButton);
+
                         availableSlots--;
                     }
                 }
 
                 if (availableSlots > 0)
                 {
-                    var gO2 = Instantiate(CreateNewWorldButton);
-                    gO2.transform.SetParent(slotSection);
-
-                    gO2.onClick?.AddListener(CreateWorld);
+                    CreateNewWorldButton = Instantiate(CreateNewWorldButton); // Store reference
+                    CreateNewWorldButton.transform.SetParent(slotSection);
+                    CreateNewWorldButton.onClick?.AddListener(CreateWorld);
                 }
 
-                // TODO: For evey slot Assign open world button / create new world button and set next slot active when there is a open world button
                 break;
+
             case WebRequestError errorResponse:
-                string errorMessage = errorResponse.ErrorMessage;
-                Debug.Log("Read environment2Ds error: " + errorMessage);
-                // TODO: Handle error scenario. Show the errormessage to the user.
+                Debug.Log("Error loading worlds: " + errorResponse.ErrorMessage);
                 break;
+
             default:
                 throw new NotImplementedException("No implementation for webRequestResponse of class: " + webRequestResponse.GetType());
         }
+    }
 
+
+
+    private void ActivateDeleteButtons()
+    {
+        deleteButtonsVisible = !deleteButtonsVisible; // Toggle visibility status
+
+        // Create a new list that only contains active buttons
+        List<Button> activeDeleteButtons = new List<Button>();
+
+        foreach (var deleteButton in deleteWorldButtons)
+        {
+            if (deleteButton != null) 
+            {
+                activeDeleteButtons.Add(deleteButton);
+                deleteButton.gameObject.SetActive(deleteButtonsVisible); 
+            }
+        }
+
+
+        deleteWorldButtons = activeDeleteButtons;
+
+        if (CreateNewWorldButton != null)
+        {
+            CreateNewWorldButton.gameObject.SetActive(!deleteButtonsVisible); // Hide the new world button when delete buttons are visible
+        }
+    }
+
+
+
+    // De wereld verwijderen
+    private async void DeleteWorld(Environment2D environment2D, Button worldButton)
+    {
+        // Verwijder de wereld via de API
+        await Environment2DApiClient.Instance.DeleteEnvironment(environment2D.id, response =>
+        {
+            if (response is WebRequestData<string> data && data.Data == "Environment2D object deleted")
+            {
+                // Verwijder de wereld uit de lijst en verwijder de bijbehorende UI
+                SessionDataManager.Instance.RemoveEnvironmentFromList(environment2D.id);
+                Destroy(worldButton.gameObject);
+                deleteWorldButtons.Remove(worldButton.GetComponentInChildren<Button>()); // Verwijder de delete button uit de lijst
+                Debug.Log("World " + environment2D.name + " deleted successfully.");
+            }
+        });
     }
 
     private void CreateWorld()
     {
-        //Add logic for if the world needs to be generated or is already existent
         LoadCreationWorld.GoToSceneByName();
     }
 
     private void OpenWorld(Environment2D environment2D)
     {
-        //Add logic for if the world needs to be generated or is already existent
         SessionDataManager.Instance.SetCurrentEnvironment(environment2D, false);
         LoadEnvironment2D.GoToSceneByName();
     }
@@ -100,5 +146,5 @@ public class WorldMenuManager : MonoBehaviour
         LoadMenu.GoToSceneByName();
     }
 
-}
 
+}

@@ -1,36 +1,31 @@
-using NUnit;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
-
 
 public class Environment2DManager : MonoBehaviour
 {
     [SerializeField] private ProceduralTilemapGenerator ProceduralTilemapGenerator;
     [SerializeField] private SceneLoader LoadWorldMenuScreen;
-    [SerializeField] private List<GameObject> prefabObjects;
+    [SerializeField] private InventoryManager inventoryManager;
 
     private bool IsSaving;
-
 
     private void Start()
     {
 
-        if (SessionDataManager.Instance.GetCurrentEnvironmentSessionData().IsNewWorld)
+
+        var sessionData = SessionDataManager.Instance.GetCurrentEnvironmentSessionData();
+
+        if (sessionData.IsNewWorld)
         {
-            var env2D = SessionDataManager.Instance.GetCurrentEnvironmentSessionData().Environment2D;
-
+            var env2D = sessionData.Environment2D;
             ProceduralTilemapGenerator.GenerateWorld((int)env2D.maxLength, (int)env2D.maxHeight, 0);
-
-            SessionDataManager.Instance.GetCurrentEnvironmentSessionData().Environment2D.Seed = ProceduralTilemapGenerator.GetSeed();
+            sessionData.Environment2D.Seed = ProceduralTilemapGenerator.GetSeed();
         }
         else
         {
             GenerateWorld();
         }
-
-        // TODO: When object gets added to the environment save it to a list here so that when the save button get clicked the save button get the object from that list
     }
 
     private async void GenerateWorld()
@@ -38,7 +33,7 @@ public class Environment2DManager : MonoBehaviour
         var currentEnvironment2d = SessionDataManager.Instance.GetCurrentEnvironmentSessionData().Environment2D;
         ProceduralTilemapGenerator.GenerateWorld((int)currentEnvironment2d.maxLength, (int)currentEnvironment2d.maxHeight, currentEnvironment2d.Seed);
 
-        IWebRequestReponse webRequestResponse = await Object2DApiClient.Instance.ReadObject2Ds(SessionDataManager.Instance.GetCurrentEnvironmentSessionData().Environment2D.id);
+        IWebRequestReponse webRequestResponse = await Object2DApiClient.Instance.ReadObject2Ds(currentEnvironment2d.id);
 
         if (webRequestResponse is WebRequestData<List<Object2D>> dataResponse)
         {
@@ -53,14 +48,23 @@ public class Environment2DManager : MonoBehaviour
         }
     }
 
+    public void ReturnBackToMyEnivronmentsMenu()
+    {
+        var sessionData = SessionDataManager.Instance.GetCurrentEnvironmentSessionData();
+        sessionData.ClearPlacedObjects();  // Clear objects when returning
+        LoadWorldMenuScreen.GoToSceneByName();
+    }
+
+
+
     public async void SaveWorld()
     {
         if (IsSaving) return;
 
         IsSaving = true;
-        var environmentData = SessionDataManager.Instance.GetCurrentEnvironmentSessionData().Environment2D;
+        var sessionData = SessionDataManager.Instance.GetCurrentEnvironmentSessionData();
+        var environmentData = sessionData.Environment2D;
 
-        // Check if the environment already exists
         if (SessionDataManager.Instance.EnvironmentExists(environmentData.id))
         {
             Debug.Log("Environment already exists, skipping creation.");
@@ -69,8 +73,7 @@ public class Environment2DManager : MonoBehaviour
             return;
         }
 
-        Debug.Log(JsonUtility.ToJson(environmentData)); // Log the JSON payload
-
+        Debug.Log(JsonUtility.ToJson(environmentData));
 
         IWebRequestReponse webRequestResponse = await Environment2DApiClient.Instance.CreateEnvironment(environmentData);
 
@@ -79,7 +82,6 @@ public class Environment2DManager : MonoBehaviour
             case WebRequestData<Environment2D> dataResponse:
                 var newEnvironment = dataResponse.Data;
 
-                // Add environment to session
                 SessionDataManager.Instance.AddEnvironmentToList(newEnvironment);
                 SessionDataManager.Instance.SetCurrentEnvironment(newEnvironment, false);
 
@@ -97,82 +99,70 @@ public class Environment2DManager : MonoBehaviour
         IsSaving = false;
     }
 
-
-    public void ReturnBackToMyEnivronmentsMenu()
-    {
-        LoadWorldMenuScreen.GoToSceneByName();
-    }
-
     private async void SaveObject2D(string environmentID)
     {
-        //var tiles = SessionDataManager.Instance.GetCurrentObjects2D();
-        List<Object2D> objectsToSave = new List<Object2D>();
+        var sessionData = SessionDataManager.Instance.GetCurrentEnvironmentSessionData();
+        var placedObjects = sessionData.GetPlacedObjects();
 
-        // Get existing objects from the API (you can skip checking for identical ones, as the world is static)
-        IWebRequestReponse webRequestResponse = await Object2DApiClient.Instance.ReadObject2Ds(environmentID);
-        List<Object2D> existingObjects = new List<Object2D>();
-
-        if (webRequestResponse is WebRequestData<List<Object2D>> dataResponse)
+        if (placedObjects.Count == 0)
         {
-            existingObjects = dataResponse.Data;
+            Debug.Log("No objects to save.");
+            return;
         }
 
-        //foreach (var tile in tiles)
-        //{
-        //    if (tile == null) // Assuming 'IsPlayerPlaced' flags the objects that the player has placed
-        //        continue;
-
-        //    var newObject = new Object2D
-        //    {
-        //        environmentID = environmentID,
-        //        posX = tile.PosX,
-        //        posY = tile.PosY,
-        //        prefabID = tile.PrefabID,
-        //        rotationZ = tile.RotationZ,
-        //        scaleX = tile.ScaleX,
-        //        scaleY = tile.ScaleY,
-        //        sortingLayer = tile.SortingLayer,
-        //    };
-
-        //    // Save only new or modified player-placed objects (if needed, you can add a more advanced check here)
-        //    objectsToSave.Add(newObject);
-        //}
-
-        if (objectsToSave.Count > 0)
+        foreach (var objectToSave in placedObjects)
         {
-            // Save each object individually
-            foreach (var objectToSave in objectsToSave)
-            {
-                IWebRequestReponse response = await Object2DApiClient.Instance.CreateObject2D(objectToSave);
+            Object2DHandler handler = objectToSave.GetComponent<Object2DHandler>();
+            if (handler == null) continue; // Ensure valid objects are saved
 
-                switch (response)
-                {
-                    case WebRequestData<Object2D> successResponse:
-                        Debug.Log($"Object at ({objectToSave.posX}, {objectToSave.posY}) saved successfully.");
-                        break;
-                    case WebRequestError errorResponse:
-                        Debug.LogError("Error saving object: " + errorResponse.ErrorMessage);
-                        break;
-                    default:
-                        throw new NotImplementedException("Unhandled response type: " + response.GetType());
-                }
+            Object2D object2D = handler.GetObjectData(environmentID);
+            Debug.Log($"Saving Object2D with ID: {object2D.id}");
+
+            IWebRequestReponse response = await Object2DApiClient.Instance.CreateObject2D(object2D);
+
+            switch (response)
+            {
+                case WebRequestData<Object2D> successResponse:
+                    Debug.Log($"Object saved at ({object2D.posX}, {object2D.posY}).");
+                    break;
+                case WebRequestError errorResponse:
+                    Debug.LogError("Error saving object: " + errorResponse.ErrorMessage);
+                    break;
+                default:
+                    throw new NotImplementedException("Unexpected response type: " + response.GetType());
             }
         }
-        else
-        {
-            Debug.Log("No player-placed objects to save.");
-        }
+
+        // sessionData.ClearPlacedObjects();
     }
+
+
 
     private void InstantiateObject2D(Object2D objectData)
     {
-        GameObject prefab = prefabObjects.Find(p => p.name == objectData.prefabID);
+        // Ensure the prefab name from objectData matches exactly with one in prefabObjects
+        GameObject prefab = inventoryManager.prefabObjects.Find(p => p.name == objectData.prefabID);
+
         if (prefab != null)
         {
+            Debug.Log("Object instantiated");
+
+            // Instantiate the object at the saved position and rotation
             GameObject instance = Instantiate(prefab, new Vector3(objectData.posX, objectData.posY, 0), Quaternion.Euler(0, 0, objectData.rotationZ));
             instance.transform.localScale = new Vector3(objectData.scaleX, objectData.scaleY, 1);
-            instance.AddComponent<Object2DHandler>().inventoryManager = GetComponent<InventoryManager>();
+
+            // Add the Object2DHandler to manage the object
+            var object2DHandler = instance.AddComponent<Object2DHandler>();
+            object2DHandler.inventoryManager = inventoryManager; // Ensure inventory manager is assigned correctly
+
+            // Add to the current environment's placed objects
+            SessionDataManager.Instance.GetCurrentEnvironmentSessionData().AddPlacedObject(instance);
+        }
+        else
+        {
+            Debug.LogError($"Prefab with ID {objectData.prefabID} not found in inventory.");
         }
     }
+
 
 }

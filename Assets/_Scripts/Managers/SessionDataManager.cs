@@ -1,18 +1,17 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class SessionDataManager : Singleton<SessionDataManager>
 {
     private Dictionary<string, Environment2D> Environment2Ds = new Dictionary<string, Environment2D>();
-
     private EnvironmentSessionData environmentSessionData = new EnvironmentSessionData();
 
-    public void SetCurrentEnvironment(Environment2D environment2D, bool IsNewWorld)
+    public void SetCurrentEnvironment(Environment2D environment2D, bool isNewWorld)
     {
         if (environment2D == null) return;
 
-        environmentSessionData.Environment2D = environment2D;
-        environmentSessionData.IsNewWorld = IsNewWorld;
+        environmentSessionData.SetEnvironment(environment2D, isNewWorld);
     }
 
     public EnvironmentSessionData GetCurrentEnvironmentSessionData()
@@ -24,23 +23,21 @@ public class SessionDataManager : Singleton<SessionDataManager>
     {
         if (environment2D == null || string.IsNullOrEmpty(environment2D.id)) return;
 
-        if (Environment2Ds == null)
-            Environment2Ds = new Dictionary<string, Environment2D>();
-
         if (Environment2Ds.ContainsKey(environment2D.id))
         {
-            Environment2Ds[environment2D.id] = environment2D; // Update existing entry
+            Environment2Ds[environment2D.id] = environment2D;
         }
         else
         {
-            Environment2Ds.Add(environment2D.id, environment2D); // Add new entry
+            Environment2Ds.Add(environment2D.id, environment2D);
         }
     }
 
+    public void RemoveEnvironmentFromList(string environmentId)
+    {
+        Environment2Ds.Remove(environmentId);
+    }
 
-    /// <summary>
-    /// Used when logging out
-    /// </summary>
     public static void ResetGlobals()
     {
         var instance = Instance;
@@ -56,8 +53,38 @@ public class SessionDataManager : Singleton<SessionDataManager>
     }
 }
 
+
 public class EnvironmentSessionData
 {
-    public Environment2D Environment2D;
-    public bool IsNewWorld;
+    public Environment2D Environment2D { get; private set; }
+    public bool IsNewWorld { get; private set; }
+    private List<GameObject> PlacedObjects = new List<GameObject>();
+
+    public void SetEnvironment(Environment2D environment2D, bool isNewWorld)
+    {
+        Environment2D = environment2D;
+        IsNewWorld = isNewWorld;
+        if(PlacedObjects == null) PlacedObjects = new List<GameObject>();
+    }
+
+    public void AddPlacedObject(GameObject obj)
+    {
+        if (obj != null && !PlacedObjects.Contains(obj))
+        {
+            PlacedObjects.Add(obj);
+        }
+    }
+
+    public List<GameObject> GetPlacedObjects()
+    {
+        // Kopie teruggeven 
+        return new List<GameObject>(PlacedObjects); 
+    }
+
+    public void ClearPlacedObjects()
+    {
+        PlacedObjects.Clear();
+    }
 }
+
+

@@ -1040,7 +1040,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ProceduralTilemapGenerator: {fileID: 1227746123}
   LoadWorldMenuScreen: {fileID: 1589519901026426329, guid: 175c538d81b393442b42e414d0b7b656, type: 3}
-  prefabObjects: []
+  inventoryManager: {fileID: 798124064}
 --- !u!1 &654933716
 GameObject:
   m_ObjectHideFlags: 0
@@ -2088,7 +2088,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0012207031}
+  m_AnchoredPosition: {x: 0, y: 0.0014648438}
   m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1740652662

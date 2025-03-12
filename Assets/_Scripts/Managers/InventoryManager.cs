@@ -5,7 +5,6 @@ public class InventoryManager : MonoBehaviour
 {
     public GameObject UISideMenu;
     public List<GameObject> prefabObjects;
-    private List<GameObject> placedObjects = new List<GameObject>();
 
     public void PlaceNewObject2D(int index)
     {
@@ -14,12 +13,13 @@ public class InventoryManager : MonoBehaviour
         Object2DHandler object2D = instanceOfPrefab.GetComponent<Object2DHandler>() ?? instanceOfPrefab.AddComponent<Object2DHandler>();
         object2D.inventoryManager = this;
         object2D.isDragging = true;
-        placedObjects.Add(instanceOfPrefab);
+
+        // Toevoegen aan de sessie
+        SessionDataManager.Instance.GetCurrentEnvironmentSessionData().AddPlacedObject(instanceOfPrefab);
     }
 
     public void ShowMenu()
     {
         UISideMenu.SetActive(true);
     }
-
 }
