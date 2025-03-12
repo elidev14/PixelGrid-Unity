@@ -9,18 +9,21 @@ public class CameraController : MonoBehaviour
 
     [SerializeField]
     private Camera Camera;
+    [SerializeField]
+    private float ZoomStep;
+    [SerializeField] 
+    private float moveSpeed = 20f; // Snelheid van toetsenbordbeweging
+
 
     private bool _isDragging;
 
-    [SerializeField]
-    private float ZoomStep;
-
     private float minCamSize, maxCamSize;
-
     private float mapMinX, mapMaxX, mapMinY, mapMaxY;
 
     private Vector2 minBounds;
     private Vector2 maxBounds;
+
+    private Vector2 movementInput; // Beweging via toetsenbord
 
     public void InitializeCamera(Bounds bounds)
     {
@@ -63,15 +66,21 @@ public class CameraController : MonoBehaviour
         Camera.transform.position = new Vector3(centerX, centerY, Camera.transform.position.z);
     }
 
-    public void LateUpdate()
+    private void LateUpdate()
     {
+        Vector3 moveDirection = new Vector3(movementInput.x, movementInput.y, 0) * moveSpeed * Time.deltaTime;
+
         if (_isDragging)
         {
             _difference = _origin - GetMousePosition;
-
             Camera.transform.position = ClampCamera(Camera.transform.position + _difference);
         }
+        else
+        {
+            Camera.transform.position = ClampCamera(Camera.transform.position + moveDirection);
+        }
     }
+
 
     public void OnDrag(InputAction.CallbackContext ctx)
     {
@@ -82,19 +91,25 @@ public class CameraController : MonoBehaviour
         _isDragging = ctx.started || ctx.performed;
     }
 
-    //public void ScrollZoom(InputAction.CallbackContext ctx)
-    //{
-    //    float scroll = ctx.ReadValue<float>();
+    public void OnMove(InputAction.CallbackContext ctx)
+    {
+        movementInput = ctx.ReadValue<Vector2>(); // Leest WASD/pijltjestoetsen input
+    }
 
-    //    if (scroll > 0)
-    //    {
-    //        ZoomIn();
-    //    }
-    //    else if (scroll < 0)
-    //    {
-    //        ZoomOut();
-    //    }
-    //}
+
+    public void ScrollZoom(InputAction.CallbackContext ctx)
+    {
+        float scroll = ctx.ReadValue<float>();
+
+        if (scroll > 0)
+        {
+            ZoomIn();
+        }
+        else if (scroll < 0)
+        {
+            ZoomOut();
+        }
+    }
 
     public void ZoomIn()
     {

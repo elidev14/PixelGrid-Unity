@@ -17,6 +17,7 @@ public class WorldMenuManager : MonoBehaviour
 
     [SerializeField] private SceneLoader LoadCreationWorld;
     [SerializeField] private SceneLoader LoadEnvironment2D;
+    [SerializeField] private SceneLoader LoadMenu;
 
 
 
@@ -29,11 +30,6 @@ public class WorldMenuManager : MonoBehaviour
 
     private async void InitMenu()
     {
-        if (slotSection == null)
-        {
-            Debug.LogError("Slots: Received null !");
-            return;
-        }
 
         IWebRequestReponse webRequestResponse = await Environment2DApiClient.Instance.ReadEnvironment2Ds();
 
@@ -49,8 +45,6 @@ public class WorldMenuManager : MonoBehaviour
                 int availableSlots = 5;
                 Debug.Log("List of environment2Ds: ");
 
-
-                // Add scriptableobject where Environment data is stored
                 for (var i = 0; i < environment2Ds.Count; i++)
                 {
                     var environment2D = environment2Ds[i];
@@ -99,6 +93,11 @@ public class WorldMenuManager : MonoBehaviour
         //Add logic for if the world needs to be generated or is already existent
         SessionDataManager.Instance.SetCurrentEnvironment(environment2D, false);
         LoadEnvironment2D.GoToSceneByName();
+    }
+
+    public void LoadMenuScene()
+    {
+        LoadMenu.GoToSceneByName();
     }
 
 }

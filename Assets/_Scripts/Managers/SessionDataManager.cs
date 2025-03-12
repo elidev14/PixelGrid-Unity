@@ -5,8 +5,6 @@ public class SessionDataManager : Singleton<SessionDataManager>
 {
     private Dictionary<string, Environment2D> Environment2Ds = new Dictionary<string, Environment2D>();
 
-    private List<TileScriptableObject> TileScriptableObjects = new List<TileScriptableObject>();
-
     private EnvironmentSessionData environmentSessionData = new EnvironmentSessionData();
 
     public void SetCurrentEnvironment(Environment2D environment2D, bool IsNewWorld)
@@ -39,17 +37,6 @@ public class SessionDataManager : Singleton<SessionDataManager>
         }
     }
 
-    public List<TileScriptableObject> GetCurrentTileScriptableObjects()
-    {
-        return TileScriptableObjects ?? new List<TileScriptableObject>();
-    }
-
-    public void AddToCurrentTileScriptableObjects(TileScriptableObject tileScriptableObject)
-    {
-        if (tileScriptableObject == null) return;
-
-        TileScriptableObjects.Add(tileScriptableObject);
-    }
 
     /// <summary>
     /// Used when logging out
@@ -60,7 +47,6 @@ public class SessionDataManager : Singleton<SessionDataManager>
         if (instance == null) return;
 
         instance.Environment2Ds.Clear();
-        instance.TileScriptableObjects.Clear();
         instance.environmentSessionData = new EnvironmentSessionData();
     }
 

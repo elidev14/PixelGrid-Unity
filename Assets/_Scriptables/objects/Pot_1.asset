@@ -22,3 +22,4 @@ MonoBehaviour:
   RotationZ: 0
   SortingLayer: 0
   TilePrefab: {fileID: 8245804787046206800, guid: 0fc72855bde75f643b381b8564c4b878, type: 3}
+  TileSprite: {fileID: -2112120613, guid: 6250b1fb2549db7488a9f8f9621ceb54, type: 3}

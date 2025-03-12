@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c5af81eaef75ee439c2b2f0b62aee03, type: 3}
-  m_Name: Pot_2
+  m_Name: Pot_3
   m_EditorClassIdentifier: 
   ID: 
   EnvironmentID: 
-  PrefabID: Pot_2
+  PrefabID: Pot_3
   PosX: 0
   PosY: 0
   ScaleX: 0
@@ -22,4 +22,4 @@ MonoBehaviour:
   RotationZ: 0
   SortingLayer: 0
   TilePrefab: {fileID: 3028489058339217616, guid: df66b23901a59ac4484eeefd04066030, type: 3}
-  TileSprite: {fileID: 1025913369, guid: 6250b1fb2549db7488a9f8f9621ceb54, type: 3}
+  TileSprite: {fileID: -214066881, guid: 6250b1fb2549db7488a9f8f9621ceb54, type: 3}

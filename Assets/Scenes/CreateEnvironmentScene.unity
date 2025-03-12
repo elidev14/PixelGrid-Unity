@@ -1076,6 +1076,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Camera: {fileID: 519420031}
   ZoomStep: 1
+  moveSpeed: 20
 --- !u!1 &654933716
 GameObject:
   m_ObjectHideFlags: 0
@@ -2105,7 +2106,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -30.2, y: -97.7}
+  m_AnchoredPosition: {x: -30.2, y: -49.6}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1197360329
@@ -2687,7 +2688,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -30.2, y: 77.5}
+  m_AnchoredPosition: {x: -30.2, y: 140}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1574462889
@@ -2725,7 +2726,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 9.993754, y: 368.5}
-  m_SizeDelta: {x: 526.2, y: 50}
+  m_SizeDelta: {x: 750, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1574462891
 MonoBehaviour:
@@ -2747,7 +2748,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Create World
+  m_text: Create Environment
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 59f8c6227de4d91449764c2b31ade7cd, type: 2}
   m_sharedMaterial: {fileID: 2627724577588993467, guid: 59f8c6227de4d91449764c2b31ade7cd, type: 2}

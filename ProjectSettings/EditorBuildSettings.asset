@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/SharedWorld.unity
     guid: 9a99908cca34d9c4d9e7ce8a66613e46
   - enabled: 1
-    path: Assets/Scenes/CreateWorldScrene.unity
+    path: Assets/Scenes/CreateEnvironmentScene.unity
     guid: e92874abfcdd98340bd1d2655f86ec33
   - enabled: 1
     path: Assets/Scenes/Environment2D.unity
