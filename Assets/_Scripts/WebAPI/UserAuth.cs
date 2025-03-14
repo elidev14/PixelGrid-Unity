@@ -14,11 +14,11 @@ public class UserAuth : MonoBehaviour
     // public User user;
 
     [Header("Login UI")]
-    [SerializeField] private TMP_InputField loginUsername;
+    [SerializeField] private TMP_InputField loginEmail;
     [SerializeField] private TMP_InputField loginPassword;
 
     [Header("Register UI")]
-    [SerializeField] private TMP_InputField registerUsername;
+    [SerializeField] private TMP_InputField registerEmail;
     [SerializeField] private TMP_InputField registerPassword;
 
 
@@ -31,7 +31,7 @@ public class UserAuth : MonoBehaviour
 
     [Header("Scene Loaders")]
     [SerializeField] private SceneLoader LoadEnviromentMenuScreen;
-    [SerializeField] private SceneLoader LoadSharedWorld;
+    [SerializeField] private SceneLoader LoadAuthScreen;
 
 
     [Header("Login button")]
@@ -68,7 +68,7 @@ public class UserAuth : MonoBehaviour
 
         var user = new User
         {
-            Email = loginUsername.text,
+            Email = loginEmail.text,
             Password = loginPassword.text
         };
 
@@ -94,7 +94,7 @@ public class UserAuth : MonoBehaviour
             case WebRequestError errorResponse:
                 string errorMessage = errorResponse.ErrorMessage;
                 Debug.Log("Login error: " + errorMessage);
-                LoginErrorText.text = "(Je Gebruikersnaam/wachtwoord is fout of al in gebruik)";
+                LoginErrorText.text = "(Er is een fout opgetreden. Controleer je gebruikersnaam en e-mail en probeer het opnieuw.)";
                 LoginErrorObject.SetActive(true);
                 ResetLoginUI();
                 break;
@@ -134,7 +134,7 @@ public class UserAuth : MonoBehaviour
 
         var user = new User
         {
-            Email = registerUsername.text,
+            Email = registerEmail.text,
             Password = registerPassword.text
         };
 
@@ -161,11 +161,21 @@ public class UserAuth : MonoBehaviour
                 Debug.Log("Register succes!");
 
                 // Eventueel terug naar inlogscherm om login te verifiëren
-                LoadEnviromentMenuScreen.GoToSceneByName();
+                LoadAuthScreen.GoToSceneByName();
                 break;
             case WebRequestError errorResponse:
                 string errorMessage = errorResponse.ErrorMessage;
                 Debug.Log("Register error: " + errorMessage);
+
+                if (errorMessage.Contains("400"))
+                {
+                    registeErrorText.text = "Er is een fout opgetreden. Controleer je gebruikersnaam en e-mail en probeer het opnieuw.";
+                }
+                else
+                {
+                    registeErrorText.text = "Er is een onbekende fout opgetreden. Probeer het later opnieuw.";
+                }
+
                 registeErrorObject.SetActive(true);
                 ResetRegisterUI();
                 break;
@@ -221,31 +231,6 @@ public class UserAuth : MonoBehaviour
         return "OK";
     }
 
-
-private bool CheckInputValidation(User user)
-    {
-        return !string.IsNullOrEmpty(user.Email) || !string.IsNullOrEmpty(user.Password);
-    }
-
-    private bool CheckRegisterInputValidation(User user)
-    {
-        if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password))
-        {
-            return false;
-        }
-
-        string password = user.Password;
-
-        // Regex patroon: 
-        // - Minimaal 1 kleine letter: (?=.*[a-z])
-        // - Minimaal 1 hoofdletter: (?=.*[A-Z])
-        // - Minimaal 1 cijfer: (?=.*\d)
-        // - Minimaal 1 speciaal teken: (?=.*[\W_])
-        // - Minimaal 10 tekens lang: .{10,}
-        string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{10,}$";
-
-        return Regex.IsMatch(password, pattern);
-    }
 
 
 }

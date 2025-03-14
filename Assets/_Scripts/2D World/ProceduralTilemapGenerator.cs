@@ -30,7 +30,7 @@ public class ProceduralTilemapGenerator : MonoBehaviour
     private FixedSizedContainer<CustomTile> PriorityLevel;
 
     [SerializeField]
-    private int _seed = 0; // Default seed, 0 means random
+    private int _seed; // Default seed, 0 means random
 
     private Dictionary<int, CustomTile> tileLayers; // Stores tile layers
 

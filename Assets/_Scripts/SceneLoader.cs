@@ -4,11 +4,11 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : MonoBehaviour
 {
     [SerializeField]
-    private string sceneName; // String field to specify the scene name
+    private string sceneName; 
 
 
     [SerializeField]
-    private int sceneIndex; // Field to specify the scene index in the build settings
+    private int sceneIndex; 
 
     public void GoToSceneByName()
     {

@@ -20,7 +20,7 @@ public class Environment2DManager : MonoBehaviour
         {
             var env2D = sessionData.Environment2D;
             ProceduralTilemapGenerator.GenerateWorld((int)env2D.maxLength, (int)env2D.maxHeight, 0);
-            sessionData.Environment2D.Seed = ProceduralTilemapGenerator.GetSeed();
+            sessionData.Environment2D.seed = ProceduralTilemapGenerator.GetSeed();
         }
         else
         {
@@ -31,7 +31,7 @@ public class Environment2DManager : MonoBehaviour
     private async void GenerateWorld()
     {
         var currentEnvironment2d = SessionDataManager.Instance.GetCurrentEnvironmentSessionData().Environment2D;
-        ProceduralTilemapGenerator.GenerateWorld((int)currentEnvironment2d.maxLength, (int)currentEnvironment2d.maxHeight, currentEnvironment2d.Seed);
+        ProceduralTilemapGenerator.GenerateWorld((int)currentEnvironment2d.maxLength, (int)currentEnvironment2d.maxHeight, currentEnvironment2d.seed);
 
         IWebRequestReponse webRequestResponse = await Object2DApiClient.Instance.ReadObject2Ds(currentEnvironment2d.id);
 
@@ -133,7 +133,6 @@ public class Environment2DManager : MonoBehaviour
             }
         }
 
-        // sessionData.ClearPlacedObjects();
     }
 
 

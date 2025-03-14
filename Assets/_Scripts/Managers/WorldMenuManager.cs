@@ -14,17 +14,15 @@ public class WorldMenuManager : MonoBehaviour
     [SerializeField] private SceneLoader LoadEnvironment2D;
     [SerializeField] private SceneLoader LoadMenu;
 
-
-
     private bool deleteButtonsVisible = false;
     private List<Button> deleteWorldButtons = new List<Button>(); 
 
     public void Start()
     {
-        // Initialisatie van het menu
+        // initialisatie van het menu
         InitMenu();
 
-        // Voeg een listener toe voor de EditButton
+        // Veg een listener toe voor de edit Button
         EditButton.onClick.AddListener(ActivateDeleteButtons);
     }
 
@@ -45,21 +43,21 @@ public class WorldMenuManager : MonoBehaviour
                 {
                     if (environment2D != null)
                     {
-                        // Voeg de omgeving toe aan de lijst
+                        // Voegt de omgeving toe aan de lijst
                         SessionDataManager.Instance.AddEnvironmentToList(environment2D); 
                         var worldButton = Instantiate(OpenWorldButton);
                         worldButton.GetComponentInChildren<TextMeshProUGUI>().text = environment2D.name;
 
-                        // Voeg de delete button toe en verberg deze in eerste instantie
+                        // voegt de delete button toe en verberg deze in eerste instantie
                         Button deleteButton = worldButton.transform.Find("DeleteWorldButton").GetComponent<Button>();
                         deleteButton.gameObject.SetActive(false); // Verberg de delete button eerst
                         deleteButton.onClick?.AddListener(() => DeleteWorld(environment2D, worldButton));
 
-                        // Voeg de open world listener toe
+                        // voegt de open world listener toe
                         worldButton.onClick?.AddListener(() => OpenWorld(environment2D));
                         worldButton.transform.SetParent(slotSection);
 
-                        // Voeg de delete button toe aan de lijst
+                        // voegt de delete button toe aan de lijst
                         deleteWorldButtons.Add(deleteButton);
 
                         availableSlots--;
@@ -88,9 +86,9 @@ public class WorldMenuManager : MonoBehaviour
 
     private void ActivateDeleteButtons()
     {
-        deleteButtonsVisible = !deleteButtonsVisible; // Toggle visibility status
+        deleteButtonsVisible = !deleteButtonsVisible; // toggle visibility status
 
-        // Create a new list that only contains active buttons
+        // create a new list that only contains active buttons
         List<Button> activeDeleteButtons = new List<Button>();
 
         foreach (var deleteButton in deleteWorldButtons)
@@ -107,24 +105,24 @@ public class WorldMenuManager : MonoBehaviour
 
         if (CreateNewWorldButton != null)
         {
-            CreateNewWorldButton.gameObject.SetActive(!deleteButtonsVisible); // Hide the new world button when delete buttons are visible
+            CreateNewWorldButton.gameObject.SetActive(!deleteButtonsVisible); // hide the new world button when delete buttons are visible
         }
     }
 
 
 
-    // De wereld verwijderen
+    // de wereld verwijderen
     private async void DeleteWorld(Environment2D environment2D, Button worldButton)
     {
-        // Verwijder de wereld via de API
+        // verwijder de wereld via de API
         await Environment2DApiClient.Instance.DeleteEnvironment(environment2D.id, response =>
         {
             if (response is WebRequestData<string> data && data.Data == "Environment2D object deleted")
             {
-                // Verwijder de wereld uit de lijst en verwijder de bijbehorende UI
+                // verwijder de wereld uit de lijst en verwijder de bijbehorende UI
                 SessionDataManager.Instance.RemoveEnvironmentFromList(environment2D.id);
                 Destroy(worldButton.gameObject);
-                deleteWorldButtons.Remove(worldButton.GetComponentInChildren<Button>()); // Verwijder de delete button uit de lijst
+                deleteWorldButtons.Remove(worldButton.GetComponentInChildren<Button>()); // verwijder de delete button uit de lijst
                 Debug.Log("World " + environment2D.name + " deleted successfully.");
             }
         });

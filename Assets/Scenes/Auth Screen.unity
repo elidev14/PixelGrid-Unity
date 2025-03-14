@@ -1764,7 +1764,7 @@ GameObject:
   - component: {fileID: 618910316}
   - component: {fileID: 618910315}
   m_Layer: 5
-  m_Name: Username_Input
+  m_Name: Email_Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2193,7 +2193,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Username
+  m_text: Email
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3573,15 +3573,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd4976055d663f4698c07ac32d22354, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loginUsername: {fileID: 1854381578}
+  loginEmail: {fileID: 1854381578}
   loginPassword: {fileID: 442033587}
-  registerUsername: {fileID: 618910315}
+  registerEmail: {fileID: 618910315}
   registerPassword: {fileID: 92856608}
   userApiClient: {fileID: 1300579992}
   loginPanel: {fileID: 1323876296}
   registerPanel: {fileID: 155009129}
   LoadEnviromentMenuScreen: {fileID: 1589519901026426329, guid: 175c538d81b393442b42e414d0b7b656, type: 3}
-  LoadSharedWorld: {fileID: 4141674599605499623, guid: 99506855ab647254eae60e1aa3576c6d, type: 3}
+  LoadAuthScreen: {fileID: 5806760440130166180, guid: 6550b1c8b6681fa4ebf16a92bc4a6287, type: 3}
   loginButton: {fileID: 92917805}
   loginButtonText: {fileID: 514878872}
   LoginErrorObject: {fileID: 1556229779}
@@ -4253,7 +4253,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Gebruikersnaam
+  m_text: Email
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4502,7 +4502,7 @@ GameObject:
   - component: {fileID: 1854381579}
   - component: {fileID: 1854381578}
   m_Layer: 5
-  m_Name: Username_Input
+  m_Name: Email_Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

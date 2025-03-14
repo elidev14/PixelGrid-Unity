@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SessionDataManager : Singleton<SessionDataManager>
@@ -50,6 +51,12 @@ public class SessionDataManager : Singleton<SessionDataManager>
     internal bool EnvironmentExists(string id)
     {
         return !string.IsNullOrEmpty(id) && Environment2Ds.ContainsKey(id);
+    }
+
+    public bool EnvironmentNameExists(string name)
+    {
+        // Controleer of de naam al bestaat in de Environment2Ds dictionary
+        return Environment2Ds.Values.Any(env => env.name.Equals(name, StringComparison.OrdinalIgnoreCase));
     }
 }
 

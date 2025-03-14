@@ -11,6 +11,6 @@ public class Environment2D
     public string ownerUserId;
     public double maxHeight;
     public double maxLength;
-    public int Seed;
+    public int seed;
 
 }
